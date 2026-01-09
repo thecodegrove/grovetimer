@@ -1,0 +1,164 @@
+# Imports Obligatorios en Kotlin - REGLA OBLIGATORIA
+
+## 🚨 REGLA CRÍTICA: NUNCA usar funciones o clases sin importar correctamente
+
+### **❌ NUNCA HACER:**
+- Usar `animateFloat()` sin importar `androidx.compose.animation.core.animateFloat`
+- Usar `rememberInfiniteTransition()` sin importar `androidx.compose.animation.core.rememberInfiniteTransition`
+- Usar `infiniteRepeatable()` sin importar `androidx.compose.animation.core.infiniteRepeatable`
+- Usar `tween()` sin importar `androidx.compose.animation.core.tween`
+- Usar cualquier función de Compose sin su import correspondiente
+- Usar funciones de Material3 sin importar `androidx.compose.material3.*`
+- Usar funciones de layout sin importar `androidx.compose.foundation.layout.*`
+- Usar funciones de runtime sin importar `androidx.compose.runtime.*`
+
+### **✅ SIEMPRE HACER:**
+- Importar TODAS las funciones y clases antes de usarlas
+- Verificar que cada función utilizada tenga su import correspondiente
+- Usar imports específicos para evitar ambigüedades
+- Agrupar imports por paquete para mejor organización
+- Verificar imports antes de compilar o ejecutar el código
+
+---
+
+## Ejemplos de Código
+
+### Patrón Correcto:
+```kotlin
+// ✅ CORRECTO - Todos los imports necesarios están presentes
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+
+@Composable
+fun LoadingState() {
+    val infiniteTransition = rememberInfiniteTransition(label = "loading")
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000)
+        ),
+        label = "rotation"
+    )
+    // ... resto del código
+}
+```
+
+### Patrón Incorrecto (NUNCA USAR):
+```kotlin
+// ❌ INCORRECTO - Falta import de animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+// ❌ FALTA: import androidx.compose.animation.core.animateFloat
+
+@Composable
+fun LoadingState() {
+    val infiniteTransition = rememberInfiniteTransition(label = "loading")
+    val rotation by infiniteTransition.animateFloat( // ❌ ERROR: animateFloat no está importado
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000)
+        ),
+        label = "rotation"
+    )
+    // ... resto del código
+}
+```
+
+---
+
+## Casos Específicos
+
+### Funciones de Animación que SIEMPRE requieren imports:
+- ✅ `animateFloat()` → `androidx.compose.animation.core.animateFloat`
+- ✅ `animateFloatAsState()` → `androidx.compose.animation.core.animateFloatAsState`
+- ✅ `rememberInfiniteTransition()` → `androidx.compose.animation.core.rememberInfiniteTransition`
+- ✅ `infiniteRepeatable()` → `androidx.compose.animation.core.infiniteRepeatable`
+- ✅ `tween()` → `androidx.compose.animation.core.tween`
+- ✅ `fadeIn()` → `androidx.compose.animation.fadeIn`
+- ✅ `fadeOut()` → `androidx.compose.animation.fadeOut`
+- ✅ `slideInVertically()` → `androidx.compose.animation.slideInVertically`
+- ✅ `slideOutVertically()` → `androidx.compose.animation.slideOutVertically`
+
+### Funciones de Layout que SIEMPRE requieren imports:
+- ✅ `Column()`, `Row()`, `Box()` → `androidx.compose.foundation.layout.*`
+- ✅ `fillMaxWidth()`, `fillMaxHeight()` → `androidx.compose.foundation.layout.*`
+- ✅ `padding()`, `size()` → `androidx.compose.foundation.layout.*`
+- ✅ `Arrangement.spacedBy()` → `androidx.compose.foundation.layout.*`
+
+### Funciones de Material3 que SIEMPRE requieren imports:
+- ✅ `Card()`, `Button()`, `Text()` → `androidx.compose.material3.*`
+- ✅ `MaterialTheme.colorScheme` → `androidx.compose.material3.*`
+- ✅ `CardDefaults`, `ButtonDefaults` → `androidx.compose.material3.*`
+
+---
+
+## Verificación Obligatoria
+
+Antes de usar cualquier función o clase:
+1. ✅ ¿Está la función importada en la sección de imports? → Si NO, añadir el import
+2. ✅ ¿El import apunta al paquete correcto? → Verificar que no haya conflictos
+3. ✅ ¿La función está siendo usada correctamente? → Verificar sintaxis y parámetros
+4. ✅ ¿El código compila sin errores? → Ejecutar verificación de compilación
+
+---
+
+## Casos de Error y Soluciones
+
+### Si aparece error "Unresolved reference":
+1. **Identificar la función problemática** en el error
+2. **Buscar el import correcto** en la documentación de Compose
+3. **Añadir el import** en la sección de imports
+4. **Verificar que no haya conflictos** con otros imports
+5. **NUNCA** usar la función sin importar
+
+### Si hay conflicto de imports:
+1. **Usar imports específicos** en lugar de wildcards (*)
+2. **Verificar el paquete correcto** para cada función
+3. **Organizar imports por paquete** para mejor legibilidad
+4. **Eliminar imports no utilizados** para evitar confusión
+
+---
+
+## Verificación y Testing
+
+Antes de usar cualquier funcionalidad, verificar en:
+1. **Documentación oficial de Compose** para imports correctos
+2. **IDE autocompletado** para sugerencias de imports
+3. **Compilación del proyecto** para detectar errores de imports
+4. **Linting del código** para verificar imports faltantes
+
+---
+
+## Regla de Ubicación
+- ✅ **SIEMPRE** colocar reglas en `.cursor/rules/` con extensión `.mdc`
+- ❌ **NUNCA** colocar reglas en otras carpetas o con extensión `.md`
+- ✅ **Ubicación correcta:** `.cursor/rules/nombre-de-la-regla.mdc`
+
+---
+
+## Checklist para Seguir la Regla
+
+### Antes de Escribir Código:
+- [ ] Identificar todas las funciones y clases que se van a usar
+- [ ] Verificar que cada una tenga su import correspondiente
+- [ ] Organizar imports por paquete para mejor legibilidad
+
+### Durante el Desarrollo:
+- [ ] Añadir imports inmediatamente al usar nuevas funciones
+- [ ] Verificar que no haya errores de compilación
+- [ ] Mantener imports organizados y limpios
+
+### Antes de Commit:
+- [ ] Verificar que todos los imports estén presentes
+- [ ] Eliminar imports no utilizados
+- [ ] Asegurar que el código compile sin errores
+- [ ] Verificar que no haya warnings de imports faltantes
+description:
+globs:
+alwaysApply: true
+---

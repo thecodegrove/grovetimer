@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.GroveTimer" parent="android:Theme.Material.NoActionBar">
+        <!-- Window background para modo oscuro - evita flashes blancos durante transiciones -->
+        <item name="android:windowBackground">@color/background_dark</item>
+    </style>
+</resources>
+

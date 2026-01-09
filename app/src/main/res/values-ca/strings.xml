@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">GroveTimer</string>
+    
+    <!-- Main Screen -->
+    <string name="home_title">GroveTimer</string>
+    <string name="start_timer_button">Iniciar Temporitzador de Reproducció</string>
+    
+    <!-- Settings Screen -->
+    <string name="settings_title">Configuracions</string>
+    <string name="settings_back_content_description">Enrere</string>
+    <string name="timer_settings_title">Configuracions del Temporitzador</string>
+    <string name="fadeout_progressive_title">Fade-out progressiu</string>
+    <string name="fadeout_progressive_description">Redueix gradualment el volum abans de pausar</string>
+    <string name="vibrate_on_finish_title">Vibrar quan acabi</string>
+    <string name="vibrate_on_finish_description">Fa vibrar el dispositiu quan el temporitzador acabi</string>
+    <string name="appearance_title">Aparença</string>
+    <string name="dark_mode_title">Mode fosc</string>
+    <string name="dark_mode_description">Canvia entre tema clar i fosc</string>
+    <string name="information_title">Informació</string>
+    <string name="version_title">Versió</string>
+    <string name="developer_title">Desenvolupador</string>
+    <string name="developer_value">TheCodeGrove</string>
+    <string name="about_github_title">GitHub</string>
+    <string name="about_buymeacoffee_title">Buy Me a Coffee</string>
+    
+    <!-- Settings Card -->
+    <string name="timer_options_title">Opcions del Temporitzador</string>
+    
+    <!-- Incremental Buttons -->
+    <string name="increment_5_minutes">+5</string>
+    <string name="increment_10_minutes">+10</string>
+    <string name="increment_30_minutes">+30</string>
+    <string name="increment_1_hour">+1h</string>
+    
+    <!-- Permissions -->
+    <string name="permissions_required_title">Permisos Necessaris</string>
+    <string name="permissions_required_description">GroveTimer necessita els següents permisos per pausar automàticament la reproducció de mitjans quan el temporitzador acabi. Tots els permisos són necessaris per al correcte funcionament de l\'aplicació.</string>
+    <string name="permissions_denied_title">Permisos Denegats</string>
+    <string name="permissions_denied_description">Alguns permisos han estat denegats. Pots habilitar-los manualment a la configuració de l\'aplicació.</string>
+    <string name="open_settings_button">Obrir Configuració</string>
+    
+    <!-- Permission Titles -->
+    <string name="permission_vibrate_title">Permís de Vibració</string>
+    <string name="permission_notifications_title">Permís de Notificacions</string>
+    
+    <!-- Permission Descriptions -->
+    <string name="permission_vibrate_description">GroveTimer necessita el permís de vibració per notificar-te quan el temporitzador acabi. Si has activat l\'opció \"Vibrar quan acabi\" a la configuració, el dispositiu vibrarà suaument quan el temps s\'esgoti, fins i tot si la pantalla està apagada o el dispositiu està en mode silenciós.</string>
+    <string name="permission_notifications_description">GroveTimer necessita el permís de notificacions per mostrar-te una notificació persistent mentre el temporitzador està actiu. Aquesta notificació et permet veure el temps restant i pausar o cancel·lar el temporitzador en qualsevol moment, fins i tot quan estàs utilitzant altres aplicacions.</string>
+    
+    <!-- Notification Listener -->
+    <string name="notification_listener_title">Accés a Notificacions del Sistema</string>
+    <string name="notification_listener_description">GroveTimer necessita accés a les notificacions del sistema per detectar quina aplicació està reproduint contingut multimèdia (música, podcasts, vídeos, etc.) i poder pausar-la automàticament quan el temporitzador acabi. Aquest accés només s\'utilitza per identificar i controlar la reproducció de mitjans, no s\'accedeix a altres notificacions ni es comparteix informació personal.</string>
+    <string name="notification_listener_button">Obrir Ajustos del Sistema</string>
+    
+    <!-- Notification Dialog -->
+    <string name="notification_permission_title">Permís Necessari</string>
+    <string name="notification_permission_message">Per permetre que aquesta aplicació pausi altres reproductors multimèdia, si us plau habilita l\'Accés a Notificacions per GroveTimer a la següent pantalla.</string>
+    <string name="open_settings_dialog_button">Obrir Configuració</string>
+    <string name="cancel_button">Cancel·lar</string>
+    
+    <!-- Material Card -->
+    <string name="material_card_content">Contingut de la targeta</string>
+    
+    <!-- Material Toggle -->
+    <string name="advanced_notification_setting_title">Configuració de notificacions avançades</string>
+    <string name="advanced_notification_setting_description">Descripció de configuració avançada per proves de layout</string>
+    
+    <!-- Timer Notification Service -->
+    <string name="timer_notification_description">Notificacions per al temporitzador de son</string>
+    
+    <!-- Timer Display -->
+    <string name="timer_display_title">Estat del Temporitzador</string>
+    <string name="timer_display_selected_time_label">Temps seleccionat:</string>
+    <string name="timer_display_not_configured">No configurat</string>
+    <string name="timer_display_remaining_time_label">Temps restant:</string>
+    <string name="timer_display_calculating">Calculant…</string>
+    <string name="timer_display_not_active">No actiu</string>
+    <string name="timer_display_state_label">Estat:</string>
+    <string name="timer_display_state_active">🟢 Actiu</string>
+    <string name="timer_display_state_inactive">🔴 Inactiu</string>
+    <string name="timer_display_stop_button">Aturar Temporitzador</string>
+    
+    <!-- Permissions Generic -->
+    <string name="permission_generic_description">Permís necessari per al funcionament de GroveTimer</string>
+    <string name="permission_media_control_title">Control de Mitjans</string>
+    <string name="permission_generic_title">Permís</string>
+    
+    <!-- Notifications -->
+    <string name="notification_timer_title">Temporitzador de Son</string>
+    <string name="notification_remaining_time">Temps restant: %1$s</string>
+    <string name="notification_resume_button">Reprendre</string>
+    <string name="notification_pause_button">Pausar</string>
+    <string name="notification_stop_button">Aturar</string>
+    <string name="notification_channel_name">Notificacions del Temporitzador</string>
+    <string name="notification_channel_description">Notificacions per al temporitzador de son</string>
+    
+    <!-- Media Info -->
+    <string name="media_info_active_playback">Reproducció activa</string>
+    
+    <!-- Settings Icon -->
+    <string name="settings_content_description">Configuracions</string>
+    
+    <!-- Media Info Card -->
+    <string name="media_info_playing_currently">Reproduint actualment:</string>
+    <string name="media_info_playback_status">Estat de reproducció:</string>
+    <string name="media_info_nothing_playing">No hi ha res reproduint-se</string>
+    <string name="media_info_music_icon">Icona de música</string>
+    
+    <!-- Circular Timer -->
+    <string name="timer_minutes_label">MINUTS</string>
+    <string name="timer_remaining_label">RESTANT</string>
+    
+    <!-- Timer Controls -->
+    <string name="timer_stop_button">Aturar Temporitzador</string>
+    
+    <!-- Time Slider -->
+    <string name="time_slider_selected_label">Temps seleccionat:</string>
+    <string name="time_slider_minutes_format">%1$d minuts</string>
+    <string name="time_slider_min_label">0 min</string>
+    <string name="time_slider_max_label">240 min</string>
+    
+    <!-- Media Info Display -->
+    <string name="media_info_display_title">Informació de Reproducció</string>
+    <string name="media_info_playing">Reproduint</string>
+    <string name="media_info_paused">Pausat</string>
+    <string name="media_info_no_playback">Sense reproducció</string>
+    <string name="media_info_nothing_playing_message">No s\'està reproduint res</string>
+    <string name="media_info_start_timer_hint">Inicia el temporitzador per veure informació de mitjans</string>
+    
+    <!-- Permissions Screen -->
+    <string name="permissions_back_to_app_button">Tornar a l\'Aplicació</string>
+</resources>

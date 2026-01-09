@@ -1,0 +1,119 @@
+# Compose MaterialTheme Context Rule
+
+## Context
+In Jetpack Compose, certain properties like `MaterialTheme.groveColors` are `@Composable` functions that can only be called from within a `@Composable` function context. When these are used inside non-composable contexts (like Canvas drawScope, LaunchedEffect, etc.), it causes compilation errors.
+
+## Rule
+**NEVER call `@Composable` properties inside non-composable contexts.** Always extract these values before using them in non-composable blocks.
+
+### ❌ Bad (Causes Compilation Error)
+```kotlin
+@Composable
+fun MyComponent() {
+    Canvas {
+        // ❌ ERROR: @Composable invocation outside @Composable context
+        drawArc(
+            color = MaterialTheme.groveColors.progressBackground,
+            // ...
+        )
+    }
+}
+```
+
+### ✅ Good (Extract Values First)
+```kotlin
+@Composable
+fun MyComponent() {
+    // ✅ Extract @Composable values before non-composable context
+    val progressBackground = MaterialTheme.groveColors.progressBackground
+    val progressActive = MaterialTheme.groveColors.progressActive
+    
+    Canvas {
+        drawArc(
+            color = progressBackground, // ✅ Use extracted value
+            // ...
+        )
+    }
+}
+```
+
+## Common Problematic Contexts
+- `Canvas { }` drawScope
+- `LaunchedEffect { }` block
+- `remember { }` lambda
+- `derivedStateOf { }` lambda
+- `produceState { }` block
+- `collectAsState()` lambda
+- Any other non-@Composable context
+
+## Pattern to Follow
+1. **Extract** all `@Composable` values at the top of your composable
+2. **Use** the extracted values in non-composable contexts
+3. **Never** call `MaterialTheme.groveColors.*` directly inside non-composable blocks
+
+## Examples
+
+### Timer Component
+```kotlin
+@Composable
+fun CircularTimer() {
+    // ✅ Extract colors first
+    val progressBackground = MaterialTheme.groveColors.progressBackground
+    val progressActive = MaterialTheme.groveColors.progressActive
+    val timerDisplay = MaterialTheme.groveColors.timerDisplay
+    
+    Canvas {
+        drawArc(color = progressBackground) // ✅ Use extracted value
+        drawArc(color = progressActive)      // ✅ Use extracted value
+    }
+    
+    Text(color = timerDisplay) // ✅ Use extracted value
+}
+```
+
+### Settings Component
+```kotlin
+@Composable
+fun SettingsCard() {
+    // ✅ Extract all theme values
+    val cardBackground = MaterialTheme.groveColors.cardBackground
+    val timerDisplay = MaterialTheme.groveColors.timerDisplay
+    val accentWarm = MaterialTheme.groveColors.accentWarm
+    
+    Card(
+        modifier = Modifier.background(cardBackground) // ✅ Use extracted value
+    ) {
+        Text(color = timerDisplay) // ✅ Use extracted value
+        Switch(
+            colors = SwitchDefaults.colors(
+                checkedThumbColor = accentWarm // ✅ Use extracted value
+            )
+        )
+    }
+}
+```
+
+## Validation Checklist
+- [ ] All `MaterialTheme.groveColors.*` calls are extracted before non-composable contexts
+- [ ] No `@Composable` properties are called inside Canvas drawScope
+- [ ] No `@Composable` properties are called inside LaunchedEffect blocks
+- [ ] All theme values are extracted at the top of the composable function
+- [ ] Extracted values are used consistently throughout the component
+
+## Error Messages to Watch For
+- `@Composable invocations can only happen from the context of a @Composable function`
+- `@Composable function expected`
+- `Composable function context required`
+
+## Implementation Strategy
+1. **Identify** all `MaterialTheme.groveColors.*` usages
+2. **Check** if they're in non-composable contexts
+3. **Extract** them to local variables at the top of the composable
+4. **Replace** direct calls with extracted variables
+5. **Test** compilation to ensure no errors
+
+This rule prevents compilation errors and ensures proper Compose architecture patterns.
+description:
+globs:
+alwaysApply: true
+---

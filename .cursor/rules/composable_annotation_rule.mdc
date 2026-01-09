@@ -1,0 +1,115 @@
+---
+globs: "**/*.kt"
+alwaysApply: false
+---
+# Composable Annotation Rule - REGLA OBLIGATORIA
+
+## 🚨 REGLA CRÍTICA: Anotaciones @Composable
+
+### **❌ NUNCA HACER:**
+- Llamar funciones `@Composable` desde funciones sin anotación
+- Usar `MaterialTheme.colorScheme` sin anotación `@Composable`
+- Usar `LocalContext.current` sin anotación `@Composable`
+- Usar `remember` o `derivedStateOf` sin anotación `@Composable`
+- Usar `collectAsState` sin anotación `@Composable`
+
+### **✅ SIEMPRE HACER:**
+- Marcar funciones que llaman a `@Composable` con `@Composable`
+- Marcar funciones que usan `MaterialTheme` con `@Composable`
+- Marcar funciones que usan `LocalContext` con `@Composable`
+- Marcar funciones que usan `remember` o `derivedStateOf` con `@Composable`
+- Marcar funciones que usan `collectAsState` con `@Composable`
+
+### **Patrón Correcto:**
+```kotlin
+// ✅ CORRECTO
+@Composable
+private fun getMediaSessionColor(mediaSessionInfo: MediaSessionInfo?): Color {
+    return when {
+        mediaSessionInfo?.isPlaying == true -> {
+            MaterialTheme.colorScheme.primary
+        }
+        else -> {
+            MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.6f)
+        }
+    }
+}
+```
+
+### **Patrón Incorrecto (NUNCA USAR):**
+```kotlin
+// ❌ INCORRECTO - Falta @Composable
+private fun getMediaSessionColor(mediaSessionInfo: MediaSessionInfo?): Color {
+    return when {
+        mediaSessionInfo?.isPlaying == true -> {
+            MaterialTheme.colorScheme.primary  // ❌ ERROR: MaterialTheme requiere @Composable
+        }
+        else -> {
+            MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.6f)
+        }
+    }
+}
+```
+
+### **Funciones que SIEMPRE requieren @Composable:**
+- ✅ Funciones que usan `MaterialTheme.colorScheme`
+- ✅ Funciones que usan `LocalContext.current`
+- ✅ Funciones que usan `remember` o `derivedStateOf`
+- ✅ Funciones que usan `collectAsState`
+- ✅ Funciones que usan `LocalConfiguration.current`
+- ✅ Funciones que usan `LocalDensity.current`
+- ✅ Funciones que usan `LocalLayoutDirection.current`
+
+### **Funciones que NO requieren @Composable:**
+- ✅ Funciones que solo usan parámetros pasados
+- ✅ Funciones que solo usan lógica pura
+- ✅ Funciones que solo usan operaciones matemáticas
+- ✅ Funciones que solo usan strings o constantes
+
+### **Ejemplos de Uso Correcto:**
+```kotlin
+// ✅ Solo lógica pura - NO necesita @Composable
+private fun formatTime(minutes: Int): String {
+    val hours = minutes / 60
+    val mins = minutes % 60
+    return if (hours > 0) "${hours}h ${mins}m" else "${mins}m"
+}
+
+// ✅ Usa MaterialTheme - SÍ necesita @Composable
+@Composable
+private fun getStatusColor(isActive: Boolean): Color {
+    return if (isActive) {
+        MaterialTheme.colorScheme.primary
+    } else {
+        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+    }
+}
+
+// ✅ Usa LocalContext - SÍ necesita @Composable
+@Composable
+private fun getStringResource(@StringRes resId: Int): String {
+    return LocalContext.current.getString(resId)
+}
+```
+
+### **Verificación Obligatoria:**
+Antes de crear cualquier función:
+1. ✅ ¿La función usa `MaterialTheme`? → Agregar `@Composable`
+2. ✅ ¿La función usa `LocalContext`? → Agregar `@Composable`
+3. ✅ ¿La función usa `remember` o `derivedStateOf`? → Agregar `@Composable`
+4. ✅ ¿La función usa `collectAsState`? → Agregar `@Composable`
+5. ✅ ¿La función llama a otras funciones `@Composable`? → Agregar `@Composable`
+
+### **En Caso de Error:**
+Si aparece el error "Functions which invoke @Composable functions must be marked with the @Composable annotation":
+1. ✅ Agregar `@Composable` a la función
+2. ✅ Verificar que todas las funciones llamadas también tengan `@Composable` si es necesario
+3. ✅ NUNCA quitar `@Composable` de funciones que lo requieren
+
+### **Regla de Extensión:**
+- ✅ Usar extensión `.mdc` para archivos de reglas de Cursor
+- ❌ NO usar extensión `.md` para archivos de reglas
+description:
+globs:
+alwaysApply: true
+---
