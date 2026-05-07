@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -33,6 +34,7 @@ import dev.thecodegrove.grovetimer.ui.common.MaterialIconButton
 import dev.thecodegrove.grovetimer.ui.components.CircularTimer
 import dev.thecodegrove.grovetimer.ui.components.MediaInfoCard
 import dev.thecodegrove.grovetimer.ui.components.TimerControls
+import dev.thecodegrove.grovetimer.ui.theme.BrandTitleTextStyle
 import dev.thecodegrove.grovetimer.ui.theme.groveColors
 import dev.thecodegrove.grovetimer.ui.timer.IncrementalTimeButtons
 import dev.thecodegrove.grovetimer.ui.timer.TimerViewModel
@@ -81,12 +83,13 @@ fun HomeScreen(
     
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        containerColor = MaterialTheme.groveColors.appBackground,
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = stringResource(R.string.home_title),
-                        style = MaterialTheme.typography.headlineMedium,
+                        style = BrandTitleTextStyle,
                         color = MaterialTheme.groveColors.timerDisplay
                     )
                 },
@@ -98,7 +101,7 @@ fun HomeScreen(
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
+                    containerColor = MaterialTheme.groveColors.appBackground,
                     actionIconContentColor = MaterialTheme.colorScheme.onSurface,
                     navigationIconContentColor = MaterialTheme.colorScheme.onSurface
                 )
@@ -111,9 +114,9 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             
             // Timer circular principal
             CircularTimer(
@@ -155,7 +158,7 @@ fun HomeScreen(
                 contentTitle = if (mediaInfo.hasActiveSession) mediaInfo.mediaTitle else null
             )
             
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
@@ -168,4 +171,3 @@ private fun formatTime(timeMillis: Long): String {
     val seconds = ((timeMillis % 60000) / 1000).toInt()
     return String.format("%02d:%02d", minutes, seconds)
 }
-

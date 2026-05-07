@@ -1,6 +1,7 @@
 package dev.thecodegrove.grovetimer.ui.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -27,14 +28,16 @@ fun MaterialButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.groveColors.progressActive,
-    contentColor: Color = MaterialTheme.colorScheme.onPrimary,
+    contentColor: Color = Color.White,
     enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .height(56.dp),
         enabled = enabled,
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(28.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
             contentColor = contentColor,
@@ -52,7 +55,7 @@ fun MaterialButton(
             text = text,
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 16.dp, horizontal = 24.dp)
+            modifier = Modifier.padding(horizontal = 24.dp)
         )
     }
 }

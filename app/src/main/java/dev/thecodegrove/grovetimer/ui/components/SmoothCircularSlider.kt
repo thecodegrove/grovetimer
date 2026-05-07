@@ -55,7 +55,7 @@ fun SmoothCircularSlider(
     
     Canvas(
         modifier = modifier
-            .size(280.dp)
+            .size(220.dp)
             .onGloballyPositioned { layoutCoordinates ->
                 canvasSize = layoutCoordinates.size
             }

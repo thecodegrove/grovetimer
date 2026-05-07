@@ -1,12 +1,14 @@
 package dev.thecodegrove.grovetimer.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material3.Icon
@@ -44,7 +46,7 @@ fun MediaInfoCard(
     MaterialCard(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 20.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -54,11 +56,17 @@ fun MediaInfoCard(
             Icon(
                 imageVector = Icons.Default.MusicNote,
                 contentDescription = stringResource(R.string.media_info_music_icon),
-                modifier = Modifier.size(40.dp),
+                modifier = Modifier
+                    .size(36.dp)
+                    .background(
+                        color = MaterialTheme.groveColors.progressBackground,
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                    .padding(9.dp),
                 tint = MaterialTheme.groveColors.progressActive
             )
             
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             
             // Información de media
             Column(
@@ -66,8 +74,9 @@ fun MediaInfoCard(
             ) {
                 Text(
                     text = if (appName != null) stringResource(R.string.media_info_playing_currently) else stringResource(R.string.media_info_playback_status),
-                    fontSize = 12.sp,
-                    color = MaterialTheme.groveColors.timerDisplay.copy(alpha = 0.7f)
+                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 11.sp,
+                    color = MaterialTheme.groveColors.mutedText
                 )
                 
                 Text(
@@ -76,9 +85,10 @@ fun MediaInfoCard(
                     } else {
                         stringResource(R.string.media_info_nothing_playing)
                     },
+                    style = MaterialTheme.typography.bodyMedium,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.groveColors.timerDisplay
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }

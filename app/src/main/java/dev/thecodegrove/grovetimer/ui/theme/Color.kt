@@ -31,6 +31,17 @@ val GroveBrown700 = Color(0xFF5D4037)     // Muy oscuro (pausa)
 val GroveBrown800 = Color(0xFF4E342E)     // Extremo oscuro
 val GroveBrown900 = Color(0xFF3E2723)     // Negro marrón
 
+// === COLORES STONE (NEUTROS CÁLIDOS) ===
+val Stone0 = Color(0xFFFAFAF8)
+val Stone50 = Color(0xFFF4F4F0)
+val Stone100 = Color(0xFFE8E8E2)
+val Stone200 = Color(0xFFD0D0C8)
+val Stone300 = Color(0xFFA8A89E)
+val Stone400 = Color(0xFF808078)
+val Stone500 = Color(0xFF585852)
+val Stone600 = Color(0xFF38382E)
+val Stone900 = Color(0xFF181810)
+
 // === COLORES DE ACENTO ===
 val GroveAccentWarm = Color(0xFFFFB74D)   // Naranja cálido
 val GroveAccentGold = Color(0xFFFFCC02)   // Dorado
@@ -52,6 +63,9 @@ data class GroveTimerColors(
     val pauseSymbol: Color,
     val timerDisplay: Color,
     val cardBackground: Color,
+    val appBackground: Color,
+    val borderSubtle: Color,
+    val mutedText: Color,
     val accentWarm: Color,
     val accentGold: Color,
     val successGreen: Color,
@@ -62,14 +76,17 @@ data class GroveTimerColors(
 val LightGroveTimerColors = GroveTimerColors(
     progressBackground = GroveGreen100,
     progressActive = GroveGreen500,
-    pauseSymbol = GroveBrown700,
-    timerDisplay = GroveBrown700,
+    pauseSymbol = GroveBrown500,
+    timerDisplay = GroveBrown500,
     cardBackground = Color.White,
+    appBackground = Stone0,
+    borderSubtle = Stone100,
+    mutedText = Stone400,
     accentWarm = GroveAccentWarm,
     accentGold = GroveAccentGold,
     successGreen = GroveSuccess,
-    warningOrange = GroveWarning,
-    surfaceElevated = Color(0xFFF8F8F8)
+    warningOrange = GroveBrown500,
+    surfaceElevated = Stone50
 )
 
 val DarkGroveTimerColors = GroveTimerColors(
@@ -77,12 +94,15 @@ val DarkGroveTimerColors = GroveTimerColors(
     progressActive = GroveGreen400,
     pauseSymbol = GroveBrown300,
     timerDisplay = GroveBrown200,
-    cardBackground = Color(0xFF1E1E1E),
+    cardBackground = Color(0xFF1F2A1F),
+    appBackground = Color(0xFF0F1419),
+    borderSubtle = GroveGreen800,
+    mutedText = GroveGreen300,
     accentWarm = GroveAccentWarm,
     accentGold = GroveAccentGold,
     successGreen = GroveGreen400,
-    warningOrange = Color(0xFFFFAB40),
-    surfaceElevated = Color(0xFF2D2D2D)
+    warningOrange = GroveBrown300,
+    surfaceElevated = Color(0xFF1F2A1F)
 )
 
 // ===============================================

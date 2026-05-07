@@ -7,12 +7,15 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.Shapes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 
 // ===============================================
@@ -39,18 +42,18 @@ val GroveTimerLightColorScheme = lightColorScheme(
     onTertiaryContainer = Color(0xFFE65100),    // Texto sobre contenedor naranja
     
     // === FONDOS ===
-    background = Color(0xFFFAFAFA),             // Fondo general
-    onBackground = Color(0xFF1C1B1F),           // Texto sobre fondo
+    background = Stone0,                        // Fondo general cálido
+    onBackground = Stone900,                    // Texto sobre fondo
     
     // === SUPERFICIES ===
     surface = Color.White,                      // Superficie de tarjetas
-    onSurface = Color(0xFF1C1B1F),             // Texto sobre superficie
-    surfaceVariant = GroveGreen50,              // Superficie variante verde
-    onSurfaceVariant = GroveGreen700,           // Texto sobre superficie variante
+    onSurface = Stone900,                       // Texto sobre superficie
+    surfaceVariant = Stone50,                   // Superficie variante cálida
+    onSurfaceVariant = Stone600,                // Texto sobre superficie variante
     
     // === CONTORNOS ===
-    outline = GroveGreen200,                    // Líneas de contorno
-    outlineVariant = GroveGreen100,             // Contorno sutil
+    outline = Stone200,                         // Líneas de contorno
+    outlineVariant = Stone100,                  // Contorno sutil
     
     // === COLORES ESPECIALES ===
     error = GroveError,
@@ -130,7 +133,7 @@ fun GroveTimerTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     followSystemTheme: Boolean = true,
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     // Determine actual theme based on user preference
@@ -173,7 +176,7 @@ fun GroveTimerTheme(
                 val backgroundColor = if (actualDarkTheme) {
                     android.graphics.Color.parseColor("#0F1419") // Fondo oscuro
                 } else {
-                    android.graphics.Color.parseColor("#FAFAFA") // Fondo claro
+                    android.graphics.Color.parseColor("#FAFAF8") // Fondo claro
                 }
                 it.setBackgroundDrawable(
                     android.graphics.drawable.ColorDrawable(backgroundColor)
@@ -188,10 +191,19 @@ fun GroveTimerTheme(
         MaterialTheme(
             colorScheme = colorScheme,
             typography = GroveTimerTypography,
+            shapes = GroveTimerShapes,
             content = content
         )
     }
 }
+
+private val GroveTimerShapes = Shapes(
+    extraSmall = RoundedCornerShape(6.dp),
+    small = RoundedCornerShape(8.dp),
+    medium = RoundedCornerShape(12.dp),
+    large = RoundedCornerShape(16.dp),
+    extraLarge = RoundedCornerShape(28.dp)
+)
 
 // ===============================================
 // EXTENSION PARA ACCEDER A COLORES PERSONALIZADOS

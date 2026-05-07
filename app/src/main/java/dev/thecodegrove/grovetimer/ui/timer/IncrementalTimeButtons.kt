@@ -35,32 +35,36 @@ fun IncrementalTimeButtons(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
+            .padding(horizontal = 20.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // Botón +5 minutos
         MaterialIncrementButton(
             text = stringResource(R.string.increment_5_minutes),
-            onClick = { onIncrement(5) }
+            onClick = { onIncrement(5) },
+            modifier = Modifier.weight(1f)
         )
         
         // Botón +10 minutos
         MaterialIncrementButton(
             text = stringResource(R.string.increment_10_minutes),
-            onClick = { onIncrement(10) }
+            onClick = { onIncrement(10) },
+            modifier = Modifier.weight(1f)
         )
         
         // Botón +30 minutos
         MaterialIncrementButton(
             text = stringResource(R.string.increment_30_minutes),
-            onClick = { onIncrement(30) }
+            onClick = { onIncrement(30) },
+            modifier = Modifier.weight(1f)
         )
         
         // Botón +1 hora (60 minutos)
         MaterialIncrementButton(
             text = stringResource(R.string.increment_1_hour),
-            onClick = { onIncrement(60) }
+            onClick = { onIncrement(60) },
+            modifier = Modifier.weight(1f)
         )
     }
 }

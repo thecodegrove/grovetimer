@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import dev.thecodegrove.grovetimer.R
 import dev.thecodegrove.grovetimer.ui.theme.groveColors
+import dev.thecodegrove.grovetimer.ui.theme.TimerDisplayTextStyle
+import dev.thecodegrove.grovetimer.ui.theme.TimerLabelTextStyle
 import dev.thecodegrove.grovetimer.ui.timer.MaterialProgressRing
 
 /**
@@ -77,7 +79,7 @@ fun CircularTimer(
                     onTimeChange(newTimeMillis)
                 },
                 range = 0f..maxMinutes,
-                strokeWidth = 38f,
+                strokeWidth = 30f,
                 enabled = true
             )
         } else {
@@ -97,8 +99,8 @@ fun CircularTimer(
             // Usar MaterialProgressRing para mejor Material Design
             MaterialProgressRing(
                 progress = progress,
-                modifier = Modifier.size(280.dp),
-                strokeWidth = 20.dp
+                modifier = Modifier.size(220.dp),
+                strokeWidth = 10.dp
             )
         }
         
@@ -112,8 +114,7 @@ fun CircularTimer(
             
             Text(
                 text = timeText,
-                fontSize = 48.sp,
-                fontWeight = FontWeight.Bold,
+                style = TimerDisplayTextStyle,
                 color = MaterialTheme.groveColors.timerDisplay
             )
             
@@ -122,8 +123,12 @@ fun CircularTimer(
             // Etiqueta del estado
             Text(
                 text = if (isActive) stringResource(R.string.timer_remaining_label) else stringResource(R.string.timer_minutes_label),
-                fontSize = 14.sp,
-                color = MaterialTheme.groveColors.timerDisplay.copy(alpha = 0.7f)
+                style = TimerLabelTextStyle,
+                color = if (isActive) {
+                    MaterialTheme.groveColors.mutedText
+                } else {
+                    MaterialTheme.groveColors.mutedText
+                }
             )
         }
     }

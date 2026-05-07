@@ -25,7 +25,7 @@ fun TimerControls(
     MaterialButton(
         text = if (isActive) stringResource(R.string.timer_stop_button) else stringResource(R.string.start_timer_button),
         onClick = if (isActive) onStopTimer else onStartTimer,
-        modifier = modifier.padding(horizontal = 16.dp),
+        modifier = modifier.padding(horizontal = 20.dp),
         containerColor = if (isActive) {
             MaterialTheme.groveColors.warningOrange
         } else {

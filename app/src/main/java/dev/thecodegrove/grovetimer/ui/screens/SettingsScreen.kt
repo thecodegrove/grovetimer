@@ -12,6 +12,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -44,6 +45,8 @@ import dev.thecodegrove.grovetimer.ui.common.MaterialIconButton
 import dev.thecodegrove.grovetimer.ui.common.MaterialToggle
 import dev.thecodegrove.grovetimer.ui.settings.SettingsViewModel
 import dev.thecodegrove.grovetimer.ui.timer.TimerViewModel
+import dev.thecodegrove.grovetimer.ui.theme.BrandTitleTextStyle
+import dev.thecodegrove.grovetimer.ui.theme.MonoValueTextStyle
 import dev.thecodegrove.grovetimer.ui.theme.groveColors
 
 /**
@@ -71,12 +74,13 @@ fun SettingsScreen(
     
     Scaffold(
         modifier = modifier.fillMaxSize(),
+        containerColor = MaterialTheme.groveColors.appBackground,
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = stringResource(R.string.settings_title),
-                        style = MaterialTheme.typography.headlineMedium,
+                        style = BrandTitleTextStyle,
                         color = MaterialTheme.groveColors.timerDisplay
                     )
                 },
@@ -88,7 +92,7 @@ fun SettingsScreen(
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
+                    containerColor = MaterialTheme.groveColors.appBackground,
                     actionIconContentColor = MaterialTheme.colorScheme.onSurface,
                     navigationIconContentColor = MaterialTheme.colorScheme.onSurface
                 )
@@ -177,11 +181,11 @@ private fun SettingsSection(
     MaterialCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 20.dp)
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.groveColors.timerDisplay
         )
         
@@ -203,16 +207,17 @@ private fun InfoRow(
     ) {
         Text(
             text = title,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
-            color = MaterialTheme.groveColors.timerDisplay,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
         
         Text(
             text = value,
-            fontSize = 14.sp,
-            color = MaterialTheme.groveColors.timerDisplay.copy(alpha = 0.7f)
+            style = MonoValueTextStyle,
+            color = MaterialTheme.groveColors.mutedText
         )
     }
     
@@ -232,16 +237,17 @@ private fun LinkRow(
     ) {
         Text(
             text = title,
-            fontSize = 14.sp,
+            style = MaterialTheme.typography.titleMedium,
+            fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
-            color = MaterialTheme.groveColors.timerDisplay,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
         
         Icon(
             imageVector = Icons.Default.OpenInNew,
             contentDescription = null,
-            tint = MaterialTheme.groveColors.timerDisplay.copy(alpha = 0.7f),
+            tint = MaterialTheme.groveColors.mutedText,
             modifier = Modifier.padding(start = 8.dp)
         )
     }

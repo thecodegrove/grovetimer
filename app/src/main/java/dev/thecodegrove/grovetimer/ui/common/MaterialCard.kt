@@ -1,5 +1,6 @@
 package dev.thecodegrove.grovetimer.ui.common
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
@@ -28,8 +29,9 @@ fun MaterialCard(
             containerColor = MaterialTheme.groveColors.cardBackground
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
+            defaultElevation = 2.dp
         ),
+        border = BorderStroke(1.dp, MaterialTheme.groveColors.borderSubtle),
         shape = MaterialTheme.shapes.large
     ) {
         Column(

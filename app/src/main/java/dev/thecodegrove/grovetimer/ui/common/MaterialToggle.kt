@@ -9,6 +9,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,16 +42,18 @@ fun MaterialToggle(
         ) {
             Text(
                 text = title,
-                fontSize = 14.sp,
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.Medium,
-                color = MaterialTheme.groveColors.timerDisplay
+                color = MaterialTheme.colorScheme.onSurface
             )
             
             if (description != null) {
                 Text(
                     text = description,
+                    style = MaterialTheme.typography.bodySmall,
                     fontSize = 12.sp,
-                    color = MaterialTheme.groveColors.timerDisplay.copy(alpha = 0.7f)
+                    color = MaterialTheme.groveColors.mutedText
                 )
             }
         }
@@ -60,10 +63,11 @@ fun MaterialToggle(
             onCheckedChange = onCheckedChange,
             modifier = Modifier.padding(top = 8.dp, start = 16.dp),
             colors = SwitchDefaults.colors(
-                checkedThumbColor = MaterialTheme.groveColors.accentWarm,
+                checkedThumbColor = Color.White,
                 checkedTrackColor = MaterialTheme.groveColors.progressActive,
-                uncheckedThumbColor = MaterialTheme.groveColors.pauseSymbol,
-                uncheckedTrackColor = MaterialTheme.groveColors.progressBackground
+                uncheckedThumbColor = Color.White,
+                uncheckedTrackColor = MaterialTheme.colorScheme.outlineVariant,
+                uncheckedBorderColor = MaterialTheme.colorScheme.outlineVariant
             )
         )
     }
