@@ -10,6 +10,20 @@ android {
     namespace = "dev.thecodegrove.grovetimer"
     compileSdk = 36
 
+    fun propertyOrEnv(name: String): String? =
+        (findProperty(name) as String?) ?: System.getenv(name)
+
+    val releaseStoreFile = propertyOrEnv("GROVETIMER_RELEASE_STORE_FILE")
+    val releaseStorePassword = propertyOrEnv("GROVETIMER_RELEASE_STORE_PASSWORD")
+    val releaseKeyAlias = propertyOrEnv("GROVETIMER_RELEASE_KEY_ALIAS")
+    val releaseKeyPassword = propertyOrEnv("GROVETIMER_RELEASE_KEY_PASSWORD")
+    val hasReleaseSigning = listOf(
+        releaseStoreFile,
+        releaseStorePassword,
+        releaseKeyAlias,
+        releaseKeyPassword
+    ).all { !it.isNullOrBlank() }
+
     defaultConfig {
         applicationId = "dev.thecodegrove.grovetimer"
         minSdk = 28
@@ -20,10 +34,24 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = file(releaseStoreFile!!)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

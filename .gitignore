@@ -121,9 +121,16 @@ secrets.properties
 *.jks
 *.keystore
 keystore.properties
+app/release.keystore
+secrets/
 
 # App Bundle
 *.aab
+
+# Google Play / fastlane credentials
+fastlane/.env
+fastlane/.env.*
+fastlane/google-play-service-account.json
 
 # Obfuscation
 proguard/

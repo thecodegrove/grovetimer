@@ -1,0 +1,83 @@
+name: Google Play
+
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: "Google Play track"
+        required: true
+        default: "internal"
+        type: choice
+        options:
+          - internal
+          - alpha
+          - beta
+          - production
+      release_status:
+        description: "Release status"
+        required: true
+        default: "draft"
+        type: choice
+        options:
+          - draft
+          - completed
+          - inProgress
+          - halted
+      validate_only:
+        description: "Validate only, do not publish"
+        required: true
+        default: true
+        type: boolean
+
+jobs:
+  google-play:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Decode release keystore
+        env:
+          ANDROID_RELEASE_KEYSTORE_BASE64: ${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}
+        run: |
+          mkdir -p app
+          printf '%s' "$ANDROID_RELEASE_KEYSTORE_BASE64" | base64 --decode > app/release.keystore
+
+      - name: Validate Google Play upload
+        if: ${{ inputs.validate_only }}
+        env:
+          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          GROVETIMER_RELEASE_STORE_FILE: app/release.keystore
+          GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
+          GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
+          GROVETIMER_RELEASE_KEY_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_KEY_PASSWORD }}
+          PLAY_TRACK: ${{ inputs.track }}
+          PLAY_RELEASE_STATUS: ${{ inputs.release_status }}
+        run: bundle exec fastlane android validate_play
+
+      - name: Upload to Google Play
+        if: ${{ !inputs.validate_only }}
+        env:
+          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          GROVETIMER_RELEASE_STORE_FILE: app/release.keystore
+          GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
+          GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
+          GROVETIMER_RELEASE_KEY_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_KEY_PASSWORD }}
+          PLAY_TRACK: ${{ inputs.track }}
+          PLAY_RELEASE_STATUS: ${{ inputs.release_status }}
+        run: bundle exec fastlane android play_internal

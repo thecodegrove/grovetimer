@@ -1,0 +1,61 @@
+default_platform(:android)
+
+ANDROID_PACKAGE_NAME = "dev.thecodegrove.grovetimer"
+RELEASE_AAB_PATH = "app/build/outputs/bundle/release/app-release.aab"
+
+def google_play_auth_options
+  if ENV["GOOGLE_PLAY_SERVICE_ACCOUNT_JSON"].to_s.strip.length > 0
+    { json_key_data: ENV["GOOGLE_PLAY_SERVICE_ACCOUNT_JSON"] }
+  elsif ENV["GOOGLE_PLAY_JSON_KEY_FILE"].to_s.strip.length > 0
+    { json_key: ENV["GOOGLE_PLAY_JSON_KEY_FILE"] }
+  else
+    UI.user_error!("Set GOOGLE_PLAY_SERVICE_ACCOUNT_JSON or GOOGLE_PLAY_JSON_KEY_FILE before uploading to Google Play.")
+  end
+end
+
+platform :android do
+  desc "Build the signed release Android App Bundle"
+  lane :build_release do
+    gradle(task: "clean")
+    gradle(task: "bundle", build_type: "Release")
+  end
+
+  desc "Validate a Google Play upload without committing the edit"
+  lane :validate_play do |options|
+    build_release
+
+    upload_to_play_store(
+      google_play_auth_options.merge(
+        package_name: ANDROID_PACKAGE_NAME,
+        aab: RELEASE_AAB_PATH,
+        track: options[:track] || ENV.fetch("PLAY_TRACK", "internal"),
+        release_status: options[:release_status] || ENV.fetch("PLAY_RELEASE_STATUS", "draft"),
+        validate_only: true,
+        skip_upload_metadata: true,
+        skip_upload_images: true,
+        skip_upload_screenshots: true,
+        skip_upload_changelogs: true,
+        ack_bundle_installation_warning: true
+      )
+    )
+  end
+
+  desc "Upload the signed release AAB to Google Play, defaulting to the internal track as a draft"
+  lane :play_internal do |options|
+    build_release
+
+    upload_to_play_store(
+      google_play_auth_options.merge(
+        package_name: ANDROID_PACKAGE_NAME,
+        aab: RELEASE_AAB_PATH,
+        track: options[:track] || ENV.fetch("PLAY_TRACK", "internal"),
+        release_status: options[:release_status] || ENV.fetch("PLAY_RELEASE_STATUS", "draft"),
+        skip_upload_metadata: true,
+        skip_upload_images: true,
+        skip_upload_screenshots: true,
+        skip_upload_changelogs: true,
+        ack_bundle_installation_warning: true
+      )
+    )
+  end
+end
