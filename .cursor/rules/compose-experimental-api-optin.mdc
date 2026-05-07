@@ -1,0 +1,187 @@
+# Compose Experimental API OptIn Rule
+
+## Context
+Jetpack Compose Material3 includes several experimental APIs that require explicit opt-in to suppress compiler warnings. These APIs are marked as experimental because they may change in future releases, but they are commonly used in production apps.
+
+## Rule
+**ALWAYS use `@OptIn(ExperimentalMaterial3Api::class)` when using experimental Material3 APIs.** This suppresses compiler warnings and acknowledges that you're aware of the experimental nature of the API.
+
+### ❌ Bad (Causes Compiler Warning)
+```kotlin
+@Composable
+fun MyScreen() {
+    Scaffold(
+        topBar = {
+            TopAppBar( // ❌ WARNING: This material API is experimental
+                title = { Text("My App") }
+            )
+        }
+    ) {
+        // Content
+    }
+}
+```
+
+### ✅ Good (Explicit OptIn)
+```kotlin
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyScreen() {
+    Scaffold(
+        topBar = {
+            TopAppBar( // ✅ No warning - explicit opt-in
+                title = { Text("My App") }
+            )
+        }
+    ) {
+        // Content
+    }
+}
+```
+
+## Common Experimental APIs Requiring OptIn
+
+### TopAppBar Components
+- `TopAppBar`
+- `TopAppBarDefaults`
+- `CenterAlignedTopAppBar`
+- `LargeTopAppBar`
+- `MediumTopAppBar`
+
+### Navigation Components
+- `NavigationBar`
+- `NavigationBarItem`
+- `NavigationRail`
+- `NavigationRailItem`
+
+### Other Components
+- `SearchBar`
+- `DatePicker`
+- `TimePicker`
+- `BottomSheetScaffold`
+
+## Required Imports
+```kotlin
+import androidx.compose.material3.ExperimentalMaterial3Api
+```
+
+## Pattern to Follow
+1. **Import** `ExperimentalMaterial3Api` at the top of the file
+2. **Add** `@OptIn(ExperimentalMaterial3Api::class)` to the composable function
+3. **Use** experimental APIs without warnings
+4. **Document** why experimental APIs are being used
+
+## Examples
+
+### Screen with TopAppBar
+```kotlin
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeScreen() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Home") },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
+            )
+        }
+    ) {
+        // Content
+    }
+}
+```
+
+### Settings Screen
+```kotlin
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SettingsScreen() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Settings") },
+                navigationIcon = {
+                    IconButton(onClick = { /* Navigate back */ }) {
+                        Icon(Icons.Default.ArrowBack, "Back")
+                    }
+                }
+            )
+        }
+    ) {
+        // Settings content
+    }
+}
+```
+
+### Navigation with Bottom Bar
+```kotlin
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainScreen() {
+    Scaffold(
+        bottomBar = {
+            NavigationBar {
+                NavigationBarItem(
+                    icon = { Icon(Icons.Default.Home, "Home") },
+                    label = { Text("Home") },
+                    selected = true,
+                    onClick = { /* Navigate */ }
+                )
+            }
+        }
+    ) {
+        // Content
+    }
+}
+```
+
+## When to Use Experimental APIs
+
+### ✅ Appropriate Use Cases
+- **TopAppBar**: Standard app bars with titles and actions
+- **NavigationBar**: Bottom navigation patterns
+- **SearchBar**: Search functionality
+- **DatePicker/TimePicker**: Date and time selection
+- **BottomSheetScaffold**: Modal bottom sheets
+
+### ⚠️ Consider Alternatives
+- **Simple layouts**: Use `Column` + `Text` instead of complex TopAppBar
+- **Custom navigation**: Build custom navigation components
+- **Basic UI**: Use stable APIs when possible
+
+## Validation Checklist
+- [ ] `ExperimentalMaterial3Api` is imported
+- [ ] `@OptIn(ExperimentalMaterial3Api::class)` is added to composable functions
+- [ ] Experimental APIs are used appropriately
+- [ ] No compiler warnings about experimental APIs
+- [ ] Code is documented explaining experimental API usage
+
+## Error Messages to Watch For
+- `This material API is experimental and is likely to change or to be removed in the future`
+- `@OptIn annotation is required`
+- `Experimental API usage without opt-in`
+
+## Implementation Strategy
+1. **Identify** experimental API usage
+2. **Add** required import: `import androidx.compose.material3.ExperimentalMaterial3Api`
+3. **Add** opt-in annotation: `@OptIn(ExperimentalMaterial3Api::class)`
+4. **Test** compilation to ensure no warnings
+5. **Document** why experimental APIs are necessary
+
+## Best Practices
+- **Use sparingly**: Only when stable alternatives don't meet requirements
+- **Document decisions**: Comment why experimental APIs are chosen
+- **Monitor updates**: Keep track of API stability changes
+- **Plan migration**: Be ready to migrate to stable APIs when available
+
+This rule ensures proper handling of experimental Material3 APIs while maintaining code quality and future compatibility.
+description:
+globs:
+alwaysApply: true
+---

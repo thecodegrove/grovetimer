@@ -1,0 +1,170 @@
+# Material Design Icons Imports - REGLA OBLIGATORIA
+
+## 🚨 REGLA CRÍTICA: Imports de Iconos de Material Design
+
+### **❌ NUNCA HACER:**
+- Importar iconos sin verificar su existencia en la documentación oficial
+- Asumir que un icono existe sin consultar la documentación
+- Usar `androidx.compose.material.icons.Icons.Filled.NombreIcono` (sintaxis completa incorrecta)
+- Generar código con iconos que no has verificado personalmente
+- Confiar en listas estáticas de iconos que pueden estar desactualizadas
+
+### **✅ SIEMPRE HACER:**
+- **VERIFICAR OBLIGATORIAMENTE** la existencia del icono antes de sugerirlo
+- **CONSULTAR LA DOCUMENTACIÓN OFICIAL** de Material Design Icons para Android Compose
+- Usar la sintaxis correcta: `import androidx.compose.material.icons.filled.NombreIcono`
+- Usar `Icons.Filled.NombreIcono` en el código
+- Si no estás seguro de un icono, **NO LO SUGIERAS** hasta verificarlo
+
+---
+
+## 🔍 **VERIFICACIÓN OBLIGATORIA ANTES DE SUGERIR ICONOS**
+
+### **PASO 1: Consultar Documentación Oficial**
+Antes de sugerir cualquier icono, **SIEMPRE** consultar:
+- Documentación oficial de Material Design Icons para Android Compose
+- Repositorio oficial de Android Compose
+- Android Studio autocompletado (si tienes acceso)
+
+### **PASO 2: Verificar Existencia**
+**NO sugerir** un icono hasta que hayas verificado personalmente que:
+- ✅ Existe en la documentación oficial
+- ✅ Está disponible en la versión actual de Android Compose
+- ✅ No está deprecado o removido
+
+### **PASO 3: Alternativas Seguras**
+Si no puedes verificar un icono específico, usar **SOLO** iconos básicos y verificados:
+- `Info` - Para información general
+- `Settings` - Para configuraciones
+- `Help` - Para ayuda
+- `Warning` - Para advertencias
+
+---
+
+## 📝 **Patrón Correcto de Imports:**
+
+```kotlin
+// ✅ CORRECTO - Solo iconos verificados personalmente
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Settings
+
+// Uso en código
+Icons.Filled.Info
+Icons.Filled.Settings
+```
+
+## ❌ **Patrón Incorrecto (NUNCA USAR):**
+
+```kotlin
+// ❌ INCORRECTO - Iconos no verificados
+import androidx.compose.material.icons.filled.MusicNote  // ❌ No verificado
+import androidx.compose.material.icons.filled.Pause      // ❌ No verificado
+import androidx.compose.material.icons.filled.Stop       // ❌ No verificado
+
+// ❌ INCORRECTO - Sintaxis completa en código
+androidx.compose.material.icons.Icons.Filled.PlayArrow
+```
+
+---
+
+## 🚫 **ICONOS PROHIBIDOS SIN VERIFICACIÓN:**
+
+**NUNCA sugerir estos iconos sin verificación personal:**
+- `MusicNote`, `Audiotrack`, `VideoLibrary`
+- `VolumeUp`, `Schedule`, `Timer`
+- `Error`, `CheckCircle`, `Refresh`
+- `Pause`, `Stop`, `Play` (versiones específicas)
+- **CUALQUIER icono que no hayas verificado personalmente**
+
+---
+
+## ✅ **ICONOS BÁSICOS PERMITIDOS (sin verificación):**
+
+**Solo estos iconos básicos se pueden sugerir sin verificación:**
+- `Info` - Información general
+- `Settings` - Configuraciones
+- `Help` - Ayuda
+- `Warning` - Advertencias
+- `Home` - Inicio
+- `Search` - Búsqueda
+- `Menu` - Menú
+- `Person` - Usuario
+
+---
+
+## 🔧 **PROCESO DE VERIFICACIÓN OBLIGATORIO:**
+
+### **Antes de Sugerir Cualquier Icono:**
+1. **¿Puedes verificar personalmente** que el icono existe?
+   - ❌ NO → Usar solo iconos básicos permitidos
+   - ✅ SÍ → Continuar con verificación
+
+2. **¿Has consultado la documentación oficial?**
+   - ❌ NO → NO sugerir el icono
+   - ✅ SÍ → Continuar con verificación
+
+3. **¿El icono está disponible en Android Compose?**
+   - ❌ NO → Buscar alternativas o usar iconos básicos
+   - ✅ SÍ → Puedes sugerir el icono
+
+---
+
+## 📚 **RECURSOS DE VERIFICACIÓN:**
+
+### **Documentación Oficial:**
+- [Material Design Icons](https://fonts.google.com/icons)
+- [Android Compose Icons](https://developer.android.com/reference/kotlin/androidx/compose/material/icons/package-summary)
+- [Android Compose Material](https://developer.android.com/reference/kotlin/androidx/compose/material/package-summary)
+
+### **Herramientas de Verificación:**
+- Android Studio autocompletado
+- Búsqueda en repositorio oficial
+- Prueba de compilación
+- Documentación de la API
+
+---
+
+## ⚠️ **CONSECUENCIAS DE NO VERIFICAR:**
+
+### **Errores de Compilación:**
+```kotlin
+// ❌ Esto causará error de compilación
+import androidx.compose.material.icons.filled.MusicNote  // Icono inexistente
+```
+
+### **Código No Funcional:**
+- Imports que fallan
+- Errores en tiempo de ejecución
+- Código que no compila
+- Pérdida de tiempo en debugging
+
+---
+
+## 🎯 **REGLA FINAL:**
+
+**NUNCA, NUNCA, NUNCA sugerir un icono de Material Design sin haber verificado personalmente su existencia en la documentación oficial.**
+
+**Si no puedes verificar un icono:**
+1. ❌ NO lo sugieras
+2. ✅ Usa iconos básicos permitidos
+3. ✅ Sugiere alternativas genéricas
+4. ✅ Pide al usuario que verifique personalmente
+
+---
+
+## 📋 **CHECKLIST OBLIGATORIO:**
+
+Antes de sugerir cualquier icono:
+- [ ] ¿Puedo verificar personalmente que existe?
+- [ ] ¿He consultado la documentación oficial?
+- [ ] ¿Está disponible en Android Compose?
+- [ ] ¿No está deprecado o removido?
+- [ ] ¿Puedo compilar y probar el código?
+
+**Si NO puedes responder SÍ a TODAS las preguntas: NO SUGIERAS EL ICONO.**
+
+---
+
+globs: "**/*.kt"
+alwaysApply: true

@@ -1,0 +1,172 @@
+# Validación de Sintaxis Android/Kotlin - REGLA OBLIGATORIA
+
+## 🚨 REGLA CRÍTICA: Errores de sintaxis en Android/Kotlin causan compilación fallida
+
+### **❌ NUNCA HACER:**
+- Usar `OneTimeWorkRequest.MIN_BACKOFF_MILLIS` (constante inexistente)
+- Usar `workInfos.any` en listas de `WorkInfo` (método inexistente)
+- Usar constantes de WorkManager que no existen
+- Usar métodos de colección que no están disponibles en el contexto
+- Asumir que las APIs de Android tienen métodos específicos sin verificar
+
+### **✅ SIEMPRE HACER:**
+- Verificar la documentación oficial de WorkManager antes de usar constantes
+- Usar métodos de colección estándar de Kotlin (`any`, `filter`, `map`, etc.)
+- Verificar la disponibilidad de APIs en la versión mínima del SDK
+- Usar constantes correctas de WorkManager como `WorkRequest.MIN_BACKOFF_MILLIS`
+- Implementar verificaciones de null safety apropiadas
+
+---
+
+## Ejemplos de Código
+
+### Patrón Correcto:
+```kotlin
+// ✅ CORRECTO - Usar constantes existentes de WorkManager
+.setBackoffCriteria(
+    BackoffPolicy.LINEAR,
+    WorkRequest.MIN_BACKOFF_MILLIS,  // Constante correcta
+    TimeUnit.MILLISECONDS
+)
+
+// ✅ CORRECTO - Usar métodos de colección estándar de Kotlin
+val hasActiveTimers = workInfos.any { workInfo ->
+    workInfo.state == WorkInfo.State.RUNNING || 
+    workInfo.state == WorkInfo.State.ENQUEUED
+}
+```
+
+### Patrón Incorrecto (NUNCA USAR):
+```kotlin
+// ❌ INCORRECTO - Constante inexistente
+.setBackoffCriteria(
+    BackoffPolicy.LINEAR,
+    OneTimeWorkRequest.MIN_BACKOFF_MILLIS,  // ❌ NO EXISTE
+    TimeUnit.MILLISECONDS
+)
+
+// ❌ INCORRECTO - Método inexistente en WorkInfo
+return workInfos.any { workInfo ->  // ❌ any no existe en esta lista
+    workInfo.state == WorkInfo.State.RUNNING
+}
+```
+
+---
+
+## Casos Específicos
+
+### Constantes de WorkManager que SIEMPRE requieren verificación:
+- ✅ `WorkRequest.MIN_BACKOFF_MILLIS` - Constante correcta para backoff mínimo
+- ✅ `WorkRequest.MAX_BACKOFF_MILLIS` - Constante correcta para backoff máximo
+- ✅ `WorkRequest.DEFAULT_BACKOFF_DELAY` - Constante correcta para delay por defecto
+- ❌ `OneTimeWorkRequest.MIN_BACKOFF_MILLIS` - NO EXISTE
+- ❌ `OneTimeWorkRequest.MAX_BACKOFF_MILLIS` - NO EXISTE
+
+### Métodos de colección que SIEMPRE están disponibles:
+- ✅ `List.any { }` - Método estándar de Kotlin para listas
+- ✅ `List.filter { }` - Método estándar de Kotlin para filtrar
+- ✅ `List.map { }` - Método estándar de Kotlin para transformar
+- ✅ `List.firstOrNull()` - Método estándar de Kotlin para obtener primer elemento
+- ✅ `List.isNotEmpty()` - Método estándar de Kotlin para verificar si no está vacía
+
+---
+
+## Ejemplos de Uso Correcto
+```kotlin
+// ✅ Caso 1 - NO necesita verificación especial
+val workInfos = workManager.getWorkInfosByTag(WORK_TAG_TIMER)
+return workInfos.any { workInfo -> workInfo.state == WorkInfo.State.RUNNING }
+
+// ✅ Caso 2 - SÍ necesita verificación de constantes
+.setBackoffCriteria(
+    BackoffPolicy.LINEAR,
+    WorkRequest.MIN_BACKOFF_MILLIS,  // ✅ Constante verificada
+    TimeUnit.MILLISECONDS
+)
+
+// ✅ Caso 3 - SÍ necesita verificación de métodos de colección
+val activeWork = workInfos.filter { it.state == WorkInfo.State.RUNNING }
+return activeWork.isNotEmpty()
+```
+
+---
+
+## Verificación Obligatoria
+Antes de usar APIs de WorkManager o métodos de colección:
+1. ✅ ¿La constante existe en la documentación oficial de WorkManager? → Usar solo constantes verificadas
+2. ✅ ¿El método de colección está disponible en Kotlin estándar? → Usar solo métodos estándar
+3. ✅ ¿La API está disponible en la versión mínima del SDK? → Verificar compatibilidad
+4. ✅ ¿Se está manejando correctamente la null safety? → Implementar verificaciones apropiadas
+
+---
+
+## Casos de Error y Soluciones
+
+### En Caso de Error de Compilación:
+Si hay errores de sintaxis relacionados con WorkManager o APIs de Android:
+1. **Verificar constantes**: Buscar en la documentación oficial de WorkManager
+2. **Verificar métodos**: Usar solo métodos estándar de Kotlin para colecciones
+3. **Verificar imports**: Asegurar que se importan las clases correctas
+4. **NUNCA** usar constantes o métodos no documentados oficialmente
+
+### Soluciones Comunes:
+```kotlin
+// ❌ Problema: Constante inexistente
+OneTimeWorkRequest.MIN_BACKOFF_MILLIS
+
+// ✅ Solución: Usar constante correcta
+WorkRequest.MIN_BACKOFF_MILLIS
+
+// ❌ Problema: Método inexistente en colección
+workInfos.any { ... }
+
+// ✅ Solución: Verificar que workInfos es una List
+val workInfos: List<WorkInfo> = workManager.getWorkInfosByTag(WORK_TAG_TIMER)
+return workInfos.any { workInfo -> ... }
+```
+
+---
+
+## Verificación y Testing
+Antes de usar APIs de Android/Kotlin, verificar en:
+1. **Documentación oficial**: Android Developer Docs
+2. **WorkManager Guide**: Documentación específica de WorkManager
+3. **Kotlin Collections**: Documentación de métodos de colección estándar
+4. **Método de prueba**: Compilar el proyecto para detectar errores de sintaxis
+
+---
+
+## Regla de Ubicación
+- ✅ **SIEMPRE** colocar reglas en `.cursor/rules/` con extensión `.mdc`
+- ❌ **NUNCA** colocar reglas en otras carpetas o con extensión `.md`
+- ✅ **Ubicación correcta:** `.cursor/rules/android-kotlin-syntax-validation.mdc`
+
+---
+
+## Checklist para Validación de Sintaxis
+
+### Antes de Compilar:
+- [ ] Verificar que todas las constantes de WorkManager existen oficialmente
+- [ ] Confirmar que los métodos de colección son estándar de Kotlin
+- [ ] Verificar la compatibilidad de APIs con la versión mínima del SDK
+- [ ] Implementar null safety apropiado para todas las operaciones
+
+### Durante el Desarrollo:
+- [ ] Usar solo constantes documentadas de WorkManager
+- [ ] Implementar métodos de colección estándar de Kotlin
+- [ ] Manejar correctamente los casos de null y error
+- [ ] Seguir las mejores prácticas de Android/Kotlin
+
+### Después de Implementar:
+- [ ] **VERIFICAR** que el código compila sin errores
+- [ ] Probar la funcionalidad en dispositivos reales
+- [ ] Verificar que no hay crashes en tiempo de ejecución
+- [ ] Documentar cualquier API específica o limitación encontrada
+
+---
+
+**Nota:** Esta regla previene errores de compilación comunes en Android/Kotlin y asegura que se usen solo APIs documentadas y métodos estándar de Kotlin.
+description:
+globs:
+alwaysApply: true
+---

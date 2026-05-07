@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">GroveTimer</string>
+    
+    <!-- Main Screen -->
+    <string name="home_title">GroveTimer</string>
+    <string name="start_timer_button">Start Playback Timer</string>
+    
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_back_content_description">Back</string>
+    <string name="timer_settings_title">Timer Settings</string>
+    <string name="fadeout_progressive_title">Progressive fade-out</string>
+    <string name="fadeout_progressive_description">Gradually reduces volume before pausing</string>
+    <string name="vibrate_on_finish_title">Vibrate when finished</string>
+    <string name="vibrate_on_finish_description">Vibrates the device when the timer ends</string>
+    <string name="appearance_title">Appearance</string>
+    <string name="dark_mode_title">Dark mode</string>
+    <string name="dark_mode_description">Switch between light and dark theme</string>
+    <string name="information_title">Information</string>
+    <string name="version_title">Version</string>
+    <string name="developer_title">Developer</string>
+    <string name="developer_value">TheCodeGrove</string>
+    <string name="about_github_title">GitHub</string>
+    <string name="about_buymeacoffee_title">Buy Me a Coffee</string>
+    
+    <!-- Settings Card -->
+    <string name="timer_options_title">Timer Options</string>
+    
+    <!-- Incremental Buttons -->
+    <string name="increment_5_minutes">+5</string>
+    <string name="increment_10_minutes">+10</string>
+    <string name="increment_30_minutes">+30</string>
+    <string name="increment_1_hour">+1h</string>
+    
+    <!-- Permissions -->
+    <string name="permissions_required_title">Required Permissions</string>
+    <string name="permissions_required_description">GroveTimer needs the following permissions to automatically pause media playback when the timer ends. All permissions are necessary for the correct functioning of the application.</string>
+    <string name="permissions_denied_title">Permissions Denied</string>
+    <string name="permissions_denied_description">Some permissions were denied. You can enable them manually in the application settings.</string>
+    <string name="open_settings_button">Open Settings</string>
+    
+    <!-- Permission Titles -->
+    <string name="permission_vibrate_title">Vibration Permission</string>
+    <string name="permission_notifications_title">Notification Permission</string>
+    
+    <!-- Permission Descriptions -->
+    <string name="permission_vibrate_description">GroveTimer needs vibration permission to notify you when the timer ends. If you have enabled the \"Vibrate when finished\" option in settings, the device will vibrate gently when the time runs out, even if the screen is off or the device is in silent mode.</string>
+    <string name="permission_notifications_description">GroveTimer needs notification permission to show you a persistent notification while the timer is active. This notification allows you to see the remaining time and pause or cancel the timer at any time, even when you are using other applications.</string>
+    
+    <!-- Notification Listener -->
+    <string name="notification_listener_title">System Notification Access</string>
+    <string name="notification_listener_description">GroveTimer needs access to system notifications to detect which application is playing multimedia content (music, podcasts, videos, etc.) and be able to pause it automatically when the timer ends. This access is only used to identify and control media playback, other notifications are not accessed and no personal information is shared.</string>
+    <string name="notification_listener_button">Open System Settings</string>
+    
+    <!-- Notification Dialog -->
+    <string name="notification_permission_title">Permission Required</string>
+    <string name="notification_permission_message">To allow this app to pause other media players, please enable Notification Access for GroveTimer in the next screen.</string>
+    <string name="open_settings_dialog_button">Open Settings</string>
+    <string name="cancel_button">Cancel</string>
+    
+    <!-- Material Card -->
+    <string name="material_card_content">Card content</string>
+    
+    <!-- Material Toggle -->
+    <string name="advanced_notification_setting_title">Advanced notification settings</string>
+    <string name="advanced_notification_setting_description">Advanced configuration description for layout testing</string>
+    
+    <!-- Timer Notification Service -->
+    <string name="timer_notification_description">Notifications for sleep timer</string>
+    
+    <!-- Timer Display -->
+    <string name="timer_display_title">Timer Status</string>
+    <string name="timer_display_selected_time_label">Selected time:</string>
+    <string name="timer_display_not_configured">Not configured</string>
+    <string name="timer_display_remaining_time_label">Remaining time:</string>
+    <string name="timer_display_calculating">Calculating…</string>
+    <string name="timer_display_not_active">Not active</string>
+    <string name="timer_display_state_label">Status:</string>
+    <string name="timer_display_state_active">🟢 Active</string>
+    <string name="timer_display_state_inactive">🔴 Inactive</string>
+    <string name="timer_display_stop_button">Stop Timer</string>
+    
+    <!-- Permissions Generic -->
+    <string name="permission_generic_description">Permission required for GroveTimer to function</string>
+    <string name="permission_media_control_title">Media Control</string>
+    <string name="permission_generic_title">Permission</string>
+    
+    <!-- Notifications -->
+    <string name="notification_timer_title">Sleep Timer</string>
+    <string name="notification_remaining_time">Remaining time: %1$s</string>
+    <string name="notification_resume_button">Resume</string>
+    <string name="notification_pause_button">Pause</string>
+    <string name="notification_stop_button">Stop</string>
+    <string name="notification_channel_name">Timer Notifications</string>
+    <string name="notification_channel_description">Notifications for sleep timer</string>
+    
+    <!-- Media Info -->
+    <string name="media_info_active_playback">Active playback</string>
+    
+    <!-- Settings Icon -->
+    <string name="settings_content_description">Settings</string>
+    
+    <!-- Media Info Card -->
+    <string name="media_info_playing_currently">Currently playing:</string>
+    <string name="media_info_playback_status">Playback status:</string>
+    <string name="media_info_nothing_playing">Nothing is playing</string>
+    <string name="media_info_music_icon">Music icon</string>
+    
+    <!-- Circular Timer -->
+    <string name="timer_minutes_label">MINUTES</string>
+    <string name="timer_remaining_label">REMAINING</string>
+    
+    <!-- Timer Controls -->
+    <string name="timer_stop_button">Stop Timer</string>
+    
+    <!-- Time Slider -->
+    <string name="time_slider_selected_label">Selected time:</string>
+    <string name="time_slider_minutes_format">%1$d minutes</string>
+    <string name="time_slider_min_label">0 min</string>
+    <string name="time_slider_max_label">240 min</string>
+    
+    <!-- Media Info Display -->
+    <string name="media_info_display_title">Playback Information</string>
+    <string name="media_info_playing">Playing</string>
+    <string name="media_info_paused">Paused</string>
+    <string name="media_info_no_playback">No playback</string>
+    <string name="media_info_nothing_playing_message">Nothing is playing</string>
+    <string name="media_info_start_timer_hint">Start the timer to see media information</string>
+    
+    <!-- Permissions Screen -->
+    <string name="permissions_back_to_app_button">Back to App</string>
+</resources>
