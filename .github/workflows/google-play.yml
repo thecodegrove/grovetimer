@@ -1,6 +1,9 @@
 name: Google Play
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       track:
@@ -59,7 +62,7 @@ jobs:
           printf '%s' "$ANDROID_RELEASE_KEYSTORE_BASE64" | base64 --decode > app/release.keystore
 
       - name: Validate Google Play upload
-        if: ${{ inputs.validate_only }}
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.validate_only }}
         env:
           GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           GROVETIMER_RELEASE_STORE_FILE: app/release.keystore
@@ -70,8 +73,20 @@ jobs:
           PLAY_RELEASE_STATUS: ${{ inputs.release_status }}
         run: bundle exec fastlane android validate_play
 
-      - name: Upload to Google Play
-        if: ${{ !inputs.validate_only }}
+      - name: Upload beta to Google Play from main
+        if: ${{ github.event_name == 'push' }}
+        env:
+          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          GROVETIMER_RELEASE_STORE_FILE: app/release.keystore
+          GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
+          GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
+          GROVETIMER_RELEASE_KEY_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_KEY_PASSWORD }}
+          PLAY_TRACK: beta
+          PLAY_RELEASE_STATUS: completed
+        run: bundle exec fastlane android play_internal
+
+      - name: Upload to Google Play manually
+        if: ${{ github.event_name == 'workflow_dispatch' && !inputs.validate_only }}
         env:
           GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           GROVETIMER_RELEASE_STORE_FILE: app/release.keystore

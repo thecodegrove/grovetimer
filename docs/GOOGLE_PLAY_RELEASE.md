@@ -13,6 +13,24 @@ The default lane is conservative:
 - Uses `draft` release status by default.
 - Skips metadata, screenshots, images, and changelogs for now.
 
+## Automatic Main Releases
+
+Every push to `main` runs `.github/workflows/google-play.yml`.
+
+For normal merged changes, the workflow:
+
+- Builds a signed release AAB.
+- Uploads it to the Google Play `beta` track.
+- Uses `completed` release status so testers can receive the build.
+- Leaves production untouched.
+
+This means the intended flow is:
+
+1. Merge to `main`.
+2. GitHub Actions publishes the build to beta automatically.
+3. Test the beta build from Google Play.
+4. Promote or manually upload to production only when ready.
+
 ## Other Options Considered
 
 - Gradle Play Publisher: good Gradle-native alternative. It adds `publishBundle` tasks and defaults to the internal track, but it couples publishing to the Gradle build more tightly.
@@ -71,7 +89,12 @@ PLAY_TRACK=beta PLAY_RELEASE_STATUS=draft bundle exec fastlane android play_inte
 
 ## GitHub Actions Setup
 
-The workflow lives at `.github/workflows/google-play.yml` and is manual via `workflow_dispatch`.
+The workflow lives at `.github/workflows/google-play.yml`.
+
+It has two entry points:
+
+- `push` to `main`: automatic beta upload with `PLAY_TRACK=beta` and `PLAY_RELEASE_STATUS=completed`.
+- `workflow_dispatch`: manual validation or manual upload to `internal`, `alpha`, `beta`, or `production`.
 
 Add these repository secrets:
 
@@ -87,7 +110,12 @@ Generate the keystore secret:
 base64 -i app/release.keystore | pbcopy
 ```
 
-Run the workflow first with `validate_only=true`. When validation passes, run it again with `validate_only=false`.
+For first setup, run the workflow manually with `validate_only=true`. When validation passes, future merges to `main` can publish beta builds automatically.
+
+For production, use the manual workflow and choose:
+
+- `track=production`
+- `release_status=draft` for a Play Console review step, or `completed` when you want it released directly.
 
 ## Sources
 
