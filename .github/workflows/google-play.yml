@@ -78,6 +78,7 @@ jobs:
           GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
           GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
           GROVETIMER_RELEASE_KEY_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_KEY_PASSWORD }}
+          GROVETIMER_VERSION_CODE: ${{ github.run_number }}
           PLAY_TRACK: ${{ inputs.track }}
           PLAY_RELEASE_STATUS: ${{ inputs.release_status }}
         run: bundle exec fastlane android validate_play
@@ -89,6 +90,7 @@ jobs:
           GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
           GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
           GROVETIMER_RELEASE_KEY_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_KEY_PASSWORD }}
+          GROVETIMER_VERSION_CODE: ${{ github.run_number }}
           PLAY_TRACK: beta
           PLAY_RELEASE_STATUS: completed
         run: bundle exec fastlane android play_internal
@@ -100,6 +102,7 @@ jobs:
           GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
           GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
           GROVETIMER_RELEASE_KEY_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_KEY_PASSWORD }}
+          GROVETIMER_VERSION_CODE: ${{ github.run_number }}
           PLAY_TRACK: ${{ inputs.track }}
           PLAY_RELEASE_STATUS: ${{ inputs.release_status }}
         run: bundle exec fastlane android play_internal

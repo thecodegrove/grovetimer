@@ -17,6 +17,7 @@ android {
     val releaseStorePassword = propertyOrEnv("GROVETIMER_RELEASE_STORE_PASSWORD")
     val releaseKeyAlias = propertyOrEnv("GROVETIMER_RELEASE_KEY_ALIAS")
     val releaseKeyPassword = propertyOrEnv("GROVETIMER_RELEASE_KEY_PASSWORD")
+    val versionCodeOverride = propertyOrEnv("GROVETIMER_VERSION_CODE")?.toIntOrNull()
     val hasReleaseSigning = listOf(
         releaseStoreFile,
         releaseStorePassword,
@@ -28,7 +29,7 @@ android {
         applicationId = "com.thecodegrove.grovetimer"
         minSdk = 28
         targetSdk = 36
-        versionCode = 1
+        versionCode = versionCodeOverride ?: 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

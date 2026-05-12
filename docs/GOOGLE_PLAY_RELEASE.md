@@ -79,6 +79,7 @@ export GROVETIMER_RELEASE_STORE_FILE="$(pwd)/app/release.keystore"
 export GROVETIMER_RELEASE_STORE_PASSWORD='...'
 export GROVETIMER_RELEASE_KEY_ALIAS='grovetimer'
 export GROVETIMER_RELEASE_KEY_PASSWORD='...'
+export GROVETIMER_VERSION_CODE=2
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/application-default-credentials.json
 ```
 
