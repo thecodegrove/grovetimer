@@ -6,7 +6,7 @@ Este documento establece el procedimiento operativo estándar para cualquier asi
 
 **GroveTimer** es una aplicación Android nativa desarrollada con Kotlin y Jetpack Compose. La aplicación permite a los usuarios establecer temporizadores para pausar automáticamente el contenido multimedia que están reproduciendo.
 
-**Paquete de la aplicación**: `dev.thecodegrove.grovetimer`
+**Paquete de la aplicación**: `com.thecodegrove.grovetimer`
 
 ## 🏗️ Arquitectura del Proyecto
 
@@ -15,7 +15,7 @@ Este documento establece el procedimiento operativo estándar para cualquier asi
 La aplicación sigue una arquitectura **Clean Architecture** con separación de capas:
 
 ```
-dev.thecodegrove.grovetimer/
+com.thecodegrove.grovetimer/
 ├── data/              # Capa de datos
 │   └── repository/    # Implementaciones de repositorios
 ├── domain/            # Capa de dominio (lógica de negocio)
@@ -80,10 +80,10 @@ La aplicación utiliza el patrón **Model-View-ViewModel**:
 
 ## 📦 Estructura de Paquetes
 
-El paquete base es `dev.thecodegrove.grovetimer`. Todos los paquetes deben seguir esta convención:
+El paquete base es `com.thecodegrove.grovetimer`. Todos los paquetes deben seguir esta convención:
 
 ```
-dev.thecodegrove.grovetimer
+com.thecodegrove.grovetimer
 ├── data.repository          # Implementaciones de repositorios
 ├── domain.model             # Modelos de dominio
 ├── domain.repository        # Interfaces de repositorios
@@ -208,7 +208,7 @@ Sistema basado en múltiplos de 4dp:
   1. Imports de Android
   2. Imports de AndroidX
   3. Imports de Jetpack Compose
-  4. Imports del proyecto (dev.thecodegrove.grovetimer)
+  4. Imports del proyecto (com.thecodegrove.grovetimer)
   5. Imports de librerías externas
 
 ## 🔐 Permisos y Servicios
@@ -444,7 +444,7 @@ Mantener esta organización al añadir nuevos strings.
 
 ## ⚠️ Notas Importantes
 
-1. **Paquete**: El paquete base es `dev.thecodegrove.grovetimer` - nunca usar `com.thecodegrove.grovetimer`
+1. **Paquete**: El paquete base es `com.thecodegrove.grovetimer`.
 2. **Servicios**: Los servicios deben ejecutarse como foreground services para funcionar correctamente
 3. **Permisos**: La aplicación requiere permisos especiales que el usuario debe conceder manualmente
 4. **MediaSessionManager**: Requiere que el usuario habilite el acceso a notificaciones en los ajustes del sistema

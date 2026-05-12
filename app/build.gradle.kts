@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.thecodegrove.grovetimer"
+    namespace = "com.thecodegrove.grovetimer"
     compileSdk = 36
 
     fun propertyOrEnv(name: String): String? =
@@ -25,7 +25,7 @@ android {
     ).all { !it.isNullOrBlank() }
 
     defaultConfig {
-        applicationId = "dev.thecodegrove.grovetimer"
+        applicationId = "com.thecodegrove.grovetimer"
         minSdk = 28
         targetSdk = 36
         versionCode = 1

@@ -1,6 +1,6 @@
 default_platform(:android)
 
-ANDROID_PACKAGE_NAME = "dev.thecodegrove.grovetimer"
+ANDROID_PACKAGE_NAME = "com.thecodegrove.grovetimer"
 RELEASE_AAB_PATH = "app/build/outputs/bundle/release/app-release.aab"
 
 def google_play_auth_options
@@ -8,8 +8,10 @@ def google_play_auth_options
     { json_key_data: ENV["GOOGLE_PLAY_SERVICE_ACCOUNT_JSON"] }
   elsif ENV["GOOGLE_PLAY_JSON_KEY_FILE"].to_s.strip.length > 0
     { json_key: ENV["GOOGLE_PLAY_JSON_KEY_FILE"] }
+  elsif ENV["GOOGLE_APPLICATION_CREDENTIALS"].to_s.strip.length > 0
+    {}
   else
-    UI.user_error!("Set GOOGLE_PLAY_SERVICE_ACCOUNT_JSON or GOOGLE_PLAY_JSON_KEY_FILE before uploading to Google Play.")
+    UI.user_error!("Set GOOGLE_PLAY_SERVICE_ACCOUNT_JSON, GOOGLE_PLAY_JSON_KEY_FILE, or authenticate with Application Default Credentials before uploading to Google Play.")
   end
 end
 

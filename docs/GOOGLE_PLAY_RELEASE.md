@@ -39,13 +39,22 @@ This means the intended flow is:
 
 ## One-Time Google Play Setup
 
-1. Create or choose a Google Cloud project.
-2. Enable the Google Play Developer API.
-3. Create a service account.
-4. In Google Play Console, invite the service account email under Users and permissions.
-5. Grant only the app permissions needed to upload releases for `dev.thecodegrove.grovetimer`.
-6. Download the service account JSON key and keep it secret.
-7. Upload at least one build manually in Play Console if this is the app's first ever Play upload.
+Google Cloud is configured to use Workload Identity Federation instead of a long-lived JSON key.
+
+Current Google Cloud values:
+
+- Project ID: `thecodegrove`
+- Project number: `187732555498`
+- Service account: `grovetimer-play-publisher@thecodegrove.iam.gserviceaccount.com`
+- Workload Identity Provider: `projects/187732555498/locations/global/workloadIdentityPools/github-actions/providers/github`
+
+Manual Play Console steps that still need to happen:
+
+1. In Google Play Console, invite `grovetimer-play-publisher@thecodegrove.iam.gserviceaccount.com` under Users and permissions.
+2. Grant only the app permissions needed to upload releases for `com.thecodegrove.grovetimer`.
+3. Upload at least one build manually in Play Console if this is the app's first ever Play upload.
+
+Do not create or commit a service account JSON key unless Workload Identity Federation is unavailable.
 
 ## Release Signing
 
@@ -70,7 +79,7 @@ export GROVETIMER_RELEASE_STORE_FILE=app/release.keystore
 export GROVETIMER_RELEASE_STORE_PASSWORD='...'
 export GROVETIMER_RELEASE_KEY_ALIAS='grovetimer'
 export GROVETIMER_RELEASE_KEY_PASSWORD='...'
-export GOOGLE_PLAY_JSON_KEY_FILE=fastlane/google-play-service-account.json
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/application-default-credentials.json
 ```
 
 Then run:
@@ -102,7 +111,8 @@ Add these repository secrets:
 - `GROVETIMER_RELEASE_STORE_PASSWORD`
 - `GROVETIMER_RELEASE_KEY_ALIAS`
 - `GROVETIMER_RELEASE_KEY_PASSWORD`
-- `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON`: raw service account JSON.
+- `GCP_WORKLOAD_IDENTITY_PROVIDER`: `projects/187732555498/locations/global/workloadIdentityPools/github-actions/providers/github`
+- `GCP_SERVICE_ACCOUNT`: `grovetimer-play-publisher@thecodegrove.iam.gserviceaccount.com`
 
 Generate the keystore secret:
 
@@ -120,5 +130,6 @@ For production, use the manual workflow and choose:
 ## Sources
 
 - Fastlane `upload_to_play_store`: https://docs.fastlane.tools/actions/upload_to_play_store/
+- Google GitHub Actions auth: https://github.com/google-github-actions/auth
 - Google Play Developer API setup: https://developers.google.com/android-publisher/getting_started
 - Gradle Play Publisher: https://github.com/Triple-T/gradle-play-publisher

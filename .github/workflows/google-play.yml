@@ -37,10 +37,19 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          create_credentials_file: true
+          export_environment_variables: true
 
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -64,7 +73,6 @@ jobs:
       - name: Validate Google Play upload
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.validate_only }}
         env:
-          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           GROVETIMER_RELEASE_STORE_FILE: app/release.keystore
           GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
           GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
@@ -76,7 +84,6 @@ jobs:
       - name: Upload beta to Google Play from main
         if: ${{ github.event_name == 'push' }}
         env:
-          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           GROVETIMER_RELEASE_STORE_FILE: app/release.keystore
           GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
           GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
@@ -88,7 +95,6 @@ jobs:
       - name: Upload to Google Play manually
         if: ${{ github.event_name == 'workflow_dispatch' && !inputs.validate_only }}
         env:
-          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           GROVETIMER_RELEASE_STORE_FILE: app/release.keystore
           GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
           GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
