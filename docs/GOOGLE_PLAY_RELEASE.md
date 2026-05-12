@@ -75,7 +75,7 @@ Never commit the keystore or passwords. They are ignored by `.gitignore`.
 For a local release build, export:
 
 ```bash
-export GROVETIMER_RELEASE_STORE_FILE=app/release.keystore
+export GROVETIMER_RELEASE_STORE_FILE="$(pwd)/app/release.keystore"
 export GROVETIMER_RELEASE_STORE_PASSWORD='...'
 export GROVETIMER_RELEASE_KEY_ALIAS='grovetimer'
 export GROVETIMER_RELEASE_KEY_PASSWORD='...'

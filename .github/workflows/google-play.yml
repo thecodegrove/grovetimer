@@ -74,7 +74,7 @@ jobs:
       - name: Validate Google Play upload
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.validate_only }}
         env:
-          GROVETIMER_RELEASE_STORE_FILE: app/release.keystore
+          GROVETIMER_RELEASE_STORE_FILE: ${{ github.workspace }}/app/release.keystore
           GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
           GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
           GROVETIMER_RELEASE_KEY_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_KEY_PASSWORD }}
@@ -85,7 +85,7 @@ jobs:
       - name: Upload beta to Google Play from main
         if: ${{ github.event_name == 'push' }}
         env:
-          GROVETIMER_RELEASE_STORE_FILE: app/release.keystore
+          GROVETIMER_RELEASE_STORE_FILE: ${{ github.workspace }}/app/release.keystore
           GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
           GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
           GROVETIMER_RELEASE_KEY_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_KEY_PASSWORD }}
@@ -96,7 +96,7 @@ jobs:
       - name: Upload to Google Play manually
         if: ${{ github.event_name == 'workflow_dispatch' && !inputs.validate_only }}
         env:
-          GROVETIMER_RELEASE_STORE_FILE: app/release.keystore
+          GROVETIMER_RELEASE_STORE_FILE: ${{ github.workspace }}/app/release.keystore
           GROVETIMER_RELEASE_STORE_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_STORE_PASSWORD }}
           GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
           GROVETIMER_RELEASE_KEY_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_KEY_PASSWORD }}
