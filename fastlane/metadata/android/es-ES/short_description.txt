@@ -1,0 +1,1 @@
+Temporizador de sueño para pausar música, podcasts y vídeos.

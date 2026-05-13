@@ -1,0 +1,1 @@
+Temporitzador de son per pausar música, pòdcasts i vídeos.

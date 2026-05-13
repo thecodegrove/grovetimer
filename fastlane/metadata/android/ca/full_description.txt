@@ -1,0 +1,17 @@
+GroveTimer és un temporitzador de son per a música, pòdcasts, vídeos i qualsevol reproducció multimèdia del dispositiu.
+
+Tria quant de temps vols continuar escoltant, inicia el temporitzador i deixa que l’app pausi la reproducció automàticament quan s’acabi el temps. És ideal per adormir-te amb música, relaxar-te amb un pòdcast o mirar un vídeo sense preocupar-te que continuï sonant tota la nit.
+
+Funcions principals:
+• Temporitzador ràpid per a reproducció multimèdia.
+• Notificació persistent amb temps restant i controls.
+• Pausa automàtica de la reproducció quan s’acaba el temps.
+• Opció de fade-out progressiu per reduir el volum abans d’aturar.
+• Vibració opcional en finalitzar.
+• Mode clar i fosc.
+• Disseny net, sense comptes ni configuració innecessària.
+
+Permisos:
+GroveTimer utilitza notificacions per mostrar el temporitzador actiu i permetre pausar-lo o aturar-lo des de qualsevol pantalla. També sol·licita accés de control multimèdia per detectar i pausar la reproducció quan el temporitzador finalitza.
+
+GroveTimer està pensada per ser petita, pràctica i respectuosa: configures el temps, prems iniciar i ja està.

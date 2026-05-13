@@ -44,6 +44,8 @@ captures/
 .idea/assetWizardSettings.xml
 .idea/dictionaries
 .idea/libraries
+.idea/.gitignore
+.idea/markdown.xml
 # Android Studio 3 in .gitignore file.
 .idea/caches
 .idea/modules.xml
@@ -73,6 +75,8 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
+vendor/bundle/
+.bundle/
 
 # Version control
 vcs.xml
@@ -97,6 +101,10 @@ Desktop.ini
 
 # Linux
 *~
+
+# Python
+__pycache__/
+*.pyc
 
 # Kotlin
 *.kt.swp

@@ -1,0 +1,17 @@
+GroveTimer is a sleep timer for music, podcasts, videos, and other media playback on your device.
+
+Choose how long you want to keep listening, start the timer, and let the app pause playback automatically when time runs out. It is useful for falling asleep to music, relaxing with a podcast, or watching a video without leaving audio playing all night.
+
+Key features:
+• Fast playback sleep timer.
+• Persistent notification with remaining time and controls.
+• Automatic media pause when the timer ends.
+• Optional progressive fade-out before stopping playback.
+• Optional vibration when finished.
+• Light and dark mode.
+• Clean design with no accounts or unnecessary setup.
+
+Permissions:
+GroveTimer uses notifications to show the active timer and let you pause or stop it from any screen. It also requests media control access so it can detect and pause playback when the timer finishes.
+
+GroveTimer is designed to be small, practical, and respectful: set the time, tap start, and you are done.

@@ -81,9 +81,13 @@ jobs:
           GROVETIMER_VERSION_CODE: ${{ github.run_number }}
           PLAY_TRACK: ${{ inputs.track }}
           PLAY_RELEASE_STATUS: ${{ inputs.release_status }}
-        run: bundle exec fastlane android validate_play
+          PLAY_VALIDATE_ONLY: "true"
+        run: |
+          bundle exec fastlane android build_release
+          bundle exec ruby tools/upload_play_store_listing.rb
+          bundle exec ruby tools/upload_play_store_release.rb
 
-      - name: Upload beta to Google Play from main
+      - name: Upload closed test to Google Play from main
         if: ${{ github.event_name == 'push' }}
         env:
           GROVETIMER_RELEASE_STORE_FILE: ${{ github.workspace }}/app/release.keystore
@@ -91,9 +95,12 @@ jobs:
           GROVETIMER_RELEASE_KEY_ALIAS: ${{ secrets.GROVETIMER_RELEASE_KEY_ALIAS }}
           GROVETIMER_RELEASE_KEY_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_KEY_PASSWORD }}
           GROVETIMER_VERSION_CODE: ${{ github.run_number }}
-          PLAY_TRACK: beta
+          PLAY_TRACK: alpha
           PLAY_RELEASE_STATUS: completed
-        run: bundle exec fastlane android play_internal
+        run: |
+          bundle exec fastlane android build_release
+          bundle exec ruby tools/upload_play_store_listing.rb
+          bundle exec ruby tools/upload_play_store_release.rb
 
       - name: Upload to Google Play manually
         if: ${{ github.event_name == 'workflow_dispatch' && !inputs.validate_only }}
@@ -105,4 +112,7 @@ jobs:
           GROVETIMER_VERSION_CODE: ${{ github.run_number }}
           PLAY_TRACK: ${{ inputs.track }}
           PLAY_RELEASE_STATUS: ${{ inputs.release_status }}
-        run: bundle exec fastlane android play_internal
+        run: |
+          bundle exec fastlane android build_release
+          bundle exec ruby tools/upload_play_store_listing.rb
+          bundle exec ruby tools/upload_play_store_release.rb

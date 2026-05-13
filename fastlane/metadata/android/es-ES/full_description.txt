@@ -1,0 +1,17 @@
+GroveTimer es un temporizador de sueño para música, podcasts, vídeos y cualquier reproducción multimedia del dispositivo.
+
+Elige cuánto tiempo quieres seguir escuchando, inicia el temporizador y deja que la app pause la reproducción automáticamente al terminar. Es ideal para dormir con música, relajarte con un podcast o ver un vídeo sin preocuparte de que siga sonando toda la noche.
+
+Funciones principales:
+• Temporizador rápido para reproducción multimedia.
+• Notificación persistente con tiempo restante y controles.
+• Pausa automática de la reproducción al finalizar.
+• Opción de fade-out progresivo para reducir el volumen antes de parar.
+• Vibración opcional al terminar.
+• Modo claro y oscuro.
+• Diseño limpio, sin cuentas ni configuración innecesaria.
+
+Permisos:
+GroveTimer usa notificaciones para mostrar el temporizador activo y permitir pausarlo o detenerlo desde cualquier pantalla. También solicita acceso de control multimedia para poder detectar y pausar la reproducción cuando el temporizador termina.
+
+GroveTimer está pensada para ser pequeña, práctica y respetuosa: configuras el tiempo, pulsas iniciar y listo.

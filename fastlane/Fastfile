@@ -1,7 +1,10 @@
+opt_out_usage
+
 default_platform(:android)
 
 ANDROID_PACKAGE_NAME = "com.thecodegrove.grovetimer"
 RELEASE_AAB_PATH = "app/build/outputs/bundle/release/app-release.aab"
+PLAY_METADATA_PATH = "fastlane/metadata/android"
 
 def google_play_auth_options
   if ENV["GOOGLE_PLAY_SERVICE_ACCOUNT_JSON"].to_s.strip.length > 0
@@ -30,12 +33,10 @@ platform :android do
       google_play_auth_options.merge(
         package_name: ANDROID_PACKAGE_NAME,
         aab: RELEASE_AAB_PATH,
+        metadata_path: PLAY_METADATA_PATH,
         track: options[:track] || ENV.fetch("PLAY_TRACK", "internal"),
         release_status: options[:release_status] || ENV.fetch("PLAY_RELEASE_STATUS", "draft"),
         validate_only: true,
-        skip_upload_metadata: true,
-        skip_upload_images: true,
-        skip_upload_screenshots: true,
         skip_upload_changelogs: true,
         ack_bundle_installation_warning: true
       )
@@ -55,6 +56,37 @@ platform :android do
         skip_upload_metadata: true,
         skip_upload_images: true,
         skip_upload_screenshots: true,
+        skip_upload_changelogs: true,
+        ack_bundle_installation_warning: true
+      )
+    )
+  end
+
+  desc "Upload only Google Play Store listing metadata, images, and screenshots"
+  lane :play_metadata do |options|
+    upload_to_play_store(
+      google_play_auth_options.merge(
+        package_name: ANDROID_PACKAGE_NAME,
+        metadata_path: PLAY_METADATA_PATH,
+        skip_upload_apk: true,
+        skip_upload_aab: true,
+        skip_upload_changelogs: true,
+        validate_only: options[:validate_only] || ENV.fetch("PLAY_VALIDATE_ONLY", "false") == "true"
+      )
+    )
+  end
+
+  desc "Upload the internal track AAB together with Play Store listing assets"
+  lane :play_internal_with_metadata do |options|
+    build_release
+
+    upload_to_play_store(
+      google_play_auth_options.merge(
+        package_name: ANDROID_PACKAGE_NAME,
+        metadata_path: PLAY_METADATA_PATH,
+        aab: RELEASE_AAB_PATH,
+        track: options[:track] || ENV.fetch("PLAY_TRACK", "internal"),
+        release_status: options[:release_status] || ENV.fetch("PLAY_RELEASE_STATUS", "draft"),
         skip_upload_changelogs: true,
         ack_bundle_installation_warning: true
       )

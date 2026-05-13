@@ -1,17 +1,18 @@
 # Google Play Release Setup
 
-This repo is configured to publish GroveTimer to Google Play with Fastlane.
+This repo is configured to publish GroveTimer to Google Play with Fastlane plus small direct Android Publisher API scripts.
 
 ## Recommended Path
 
-Use Fastlane `upload_to_play_store` as the main release path. It uploads the signed AAB through the Google Play Developer Publishing API and supports tracks such as `internal`, `alpha`, `beta`, and `production`.
+Use Fastlane for building the signed Android App Bundle, then use the direct Android Publisher API scripts for uploading. This keeps Workload Identity Federation working without a long-lived service account JSON key.
 
-The default lane is conservative:
+The default workflow is conservative:
 
 - Builds `app/build/outputs/bundle/release/app-release.aab`.
-- Uploads to the `internal` track by default.
-- Uses `draft` release status by default.
-- Skips metadata, screenshots, images, and changelogs for now.
+- Uploads to the `alpha` closed testing track by default.
+- Uses `completed` release status so closed testers can install the build.
+- Uploads localized store listing metadata, feature graphics, icons, and phone screenshots from `fastlane/metadata/android`.
+- Skips changelogs for now.
 
 ## Automatic Main Releases
 
@@ -20,15 +21,16 @@ Every push to `main` runs `.github/workflows/google-play.yml`.
 For normal merged changes, the workflow:
 
 - Builds a signed release AAB.
-- Uploads it to the Google Play `beta` track.
+- Uploads it to the Google Play `alpha` closed testing track.
+- Uploads the current Play Store listing assets and screenshots.
 - Uses `completed` release status so testers can receive the build.
 - Leaves production untouched.
 
 This means the intended flow is:
 
 1. Merge to `main`.
-2. GitHub Actions publishes the build to beta automatically.
-3. Test the beta build from Google Play.
+2. GitHub Actions publishes the build to closed testing automatically.
+3. Test the closed testing build from Google Play.
 4. Promote or manually upload to production only when ready.
 
 ## Other Options Considered
@@ -87,14 +89,41 @@ Then run:
 
 ```bash
 bundle install
-bundle exec fastlane android validate_play
-bundle exec fastlane android play_internal
+bundle exec fastlane android build_release
+PLAY_VALIDATE_ONLY=true bundle exec ruby tools/upload_play_store_listing.rb
+PLAY_VALIDATE_ONLY=true PLAY_TRACK=alpha bundle exec ruby tools/upload_play_store_release.rb
 ```
+
+The GitHub Actions workflow uses direct Android Publisher API scripts with
+Workload Identity/ADC because Fastlane `supply` expects service-account JSON
+credentials for upload actions.
 
 To change track/status:
 
 ```bash
-PLAY_TRACK=beta PLAY_RELEASE_STATUS=draft bundle exec fastlane android play_internal
+PLAY_TRACK=beta PLAY_RELEASE_STATUS=draft bundle exec ruby tools/upload_play_store_release.rb
+```
+
+## Play Store Listing Assets
+
+Localized metadata is stored in:
+
+- `fastlane/metadata/android/es-ES`
+- `fastlane/metadata/android/en-US`
+- `fastlane/metadata/android/ca`
+
+Each locale includes `title.txt`, `short_description.txt`, `full_description.txt`, `images/icon.png`, `images/featureGraphic.png`, and five stylized `images/phoneScreenshots/*.png`.
+
+Regenerate listing assets after taking fresh emulator screenshots:
+
+```bash
+python3 tools/generate_play_store_assets.py
+```
+
+Upload only the listing, without uploading a build:
+
+```bash
+bundle exec ruby tools/upload_play_store_listing.rb
 ```
 
 ## GitHub Actions Setup
@@ -103,7 +132,7 @@ The workflow lives at `.github/workflows/google-play.yml`.
 
 It has two entry points:
 
-- `push` to `main`: automatic beta upload with `PLAY_TRACK=beta` and `PLAY_RELEASE_STATUS=completed`.
+- `push` to `main`: automatic closed testing upload with `PLAY_TRACK=alpha` and `PLAY_RELEASE_STATUS=completed`.
 - `workflow_dispatch`: manual validation or manual upload to `internal`, `alpha`, `beta`, or `production`.
 
 Add these repository secrets:
@@ -121,7 +150,7 @@ Generate the keystore secret:
 base64 -i app/release.keystore | pbcopy
 ```
 
-For first setup, run the workflow manually with `validate_only=true`. When validation passes, future merges to `main` can publish beta builds automatically.
+For first setup, run the workflow manually with `validate_only=true`. When validation passes, future merges to `main` can publish closed testing builds automatically.
 
 For production, use the manual workflow and choose:
 
