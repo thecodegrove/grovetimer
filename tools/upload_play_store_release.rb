@@ -10,6 +10,21 @@ TRACK = ENV.fetch("PLAY_TRACK", "alpha")
 RELEASE_STATUS = ENV.fetch("PLAY_RELEASE_STATUS", "draft")
 SCOPE = "https://www.googleapis.com/auth/androidpublisher"
 
+RELEASE_NOTES = [
+  Google::Apis::AndroidpublisherV3::LocalizedText.new(
+    language: "ca",
+    text: "Primera versio de prova tancada de GroveTimer amb temporitzador de reproduccio, notificacio persistent i configuracio de fade-out progressiu."
+  ),
+  Google::Apis::AndroidpublisherV3::LocalizedText.new(
+    language: "en-US",
+    text: "First closed testing version of GroveTimer with playback timer, persistent notification, and progressive fade-out settings."
+  ),
+  Google::Apis::AndroidpublisherV3::LocalizedText.new(
+    language: "es-ES",
+    text: "Primera version de prueba cerrada de GroveTimer con temporizador de reproduccion, notificacion persistente y configuracion de fade-out progresivo."
+  )
+].freeze
+
 unless File.exist?(AAB_PATH)
   raise "AAB not found at #{AAB_PATH}"
 end
@@ -34,6 +49,7 @@ begin
 
   release = Google::Apis::AndroidpublisherV3::TrackRelease.new(
     name: "GroveTimer #{ENV.fetch("GROVETIMER_VERSION_CODE", version_code)}",
+    release_notes: RELEASE_NOTES,
     status: RELEASE_STATUS,
     version_codes: [version_code]
   )
