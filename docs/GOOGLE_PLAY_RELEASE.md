@@ -10,7 +10,7 @@ The default workflow is conservative:
 
 - Builds `app/build/outputs/bundle/release/app-release.aab`.
 - Uploads to the `alpha` closed testing track by default.
-- Uses `completed` release status so closed testers can install the build.
+- Uses `draft` release status while the app itself is still a draft in Play Console.
 - Uploads localized store listing metadata, feature graphics, icons, and phone screenshots from `fastlane/metadata/android`.
 - Skips changelogs for now.
 
@@ -23,7 +23,7 @@ For normal merged changes, the workflow:
 - Builds a signed release AAB.
 - Uploads it to the Google Play `alpha` closed testing track.
 - Uploads the current Play Store listing assets and screenshots.
-- Uses `completed` release status so testers can receive the build.
+- Uses `draft` release status until Play Console allows non-draft releases for the app.
 - Leaves production untouched.
 
 This means the intended flow is:
@@ -132,7 +132,7 @@ The workflow lives at `.github/workflows/google-play.yml`.
 
 It has two entry points:
 
-- `push` to `main`: automatic closed testing upload with `PLAY_TRACK=alpha` and `PLAY_RELEASE_STATUS=completed`.
+- `push` to `main`: automatic closed testing upload with `PLAY_TRACK=alpha` and `PLAY_RELEASE_STATUS=draft` while the app is still a draft.
 - `workflow_dispatch`: manual validation or manual upload to `internal`, `alpha`, `beta`, or `production`.
 
 Add these repository secrets:

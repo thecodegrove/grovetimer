@@ -7,7 +7,7 @@ require "googleauth"
 PACKAGE_NAME = "com.thecodegrove.grovetimer"
 AAB_PATH = ENV.fetch("PLAY_AAB_PATH", "app/build/outputs/bundle/release/app-release.aab")
 TRACK = ENV.fetch("PLAY_TRACK", "alpha")
-RELEASE_STATUS = ENV.fetch("PLAY_RELEASE_STATUS", "completed")
+RELEASE_STATUS = ENV.fetch("PLAY_RELEASE_STATUS", "draft")
 SCOPE = "https://www.googleapis.com/auth/androidpublisher"
 
 unless File.exist?(AAB_PATH)

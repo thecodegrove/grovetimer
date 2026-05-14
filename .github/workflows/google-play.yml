@@ -96,7 +96,7 @@ jobs:
           GROVETIMER_RELEASE_KEY_PASSWORD: ${{ secrets.GROVETIMER_RELEASE_KEY_PASSWORD }}
           GROVETIMER_VERSION_CODE: ${{ github.run_number }}
           PLAY_TRACK: alpha
-          PLAY_RELEASE_STATUS: completed
+          PLAY_RELEASE_STATUS: draft
         run: |
           bundle exec fastlane android build_release
           bundle exec ruby tools/upload_play_store_listing.rb
