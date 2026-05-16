@@ -8,6 +8,7 @@ PACKAGE_NAME = "com.thecodegrove.grovetimer"
 AAB_PATH = ENV.fetch("PLAY_AAB_PATH", "app/build/outputs/bundle/release/app-release.aab")
 TRACK = ENV.fetch("PLAY_TRACK", "alpha")
 RELEASE_STATUS = ENV.fetch("PLAY_RELEASE_STATUS", "draft")
+METADATA_PATH = ENV.fetch("PLAY_METADATA_PATH", "fastlane/metadata/android")
 SCOPE = "https://www.googleapis.com/auth/androidpublisher"
 
 RELEASE_NOTES = [
@@ -27,6 +28,26 @@ RELEASE_NOTES = [
 
 unless File.exist?(AAB_PATH)
   raise "AAB not found at #{AAB_PATH}"
+end
+
+def localized_release_notes(version_code)
+  Dir.glob(File.join(METADATA_PATH, "*", "changelogs")).filter_map do |changelog_dir|
+    locale = File.basename(File.dirname(changelog_dir))
+    candidates = [
+      File.join(changelog_dir, "#{version_code}.txt"),
+      File.join(changelog_dir, "default.txt")
+    ]
+    changelog_path = candidates.find { |path| File.file?(path) }
+    next unless changelog_path
+
+    text = File.read(changelog_path).strip
+    next if text.empty?
+
+    Google::Apis::AndroidpublisherV3::LocalizedText.new(
+      language: locale,
+      text: text
+    )
+  end
 end
 
 service = Google::Apis::AndroidpublisherV3::AndroidPublisherService.new
@@ -51,7 +72,8 @@ begin
     name: "GroveTimer #{ENV.fetch("GROVETIMER_VERSION_CODE", version_code)}",
     release_notes: RELEASE_NOTES,
     status: RELEASE_STATUS,
-    version_codes: [version_code]
+    version_codes: [version_code],
+    release_notes: localized_release_notes(version_code)
   )
   track = Google::Apis::AndroidpublisherV3::Track.new(
     track: TRACK,

@@ -13,7 +13,7 @@ The default workflow is conservative:
 - Uses `draft` release status while the app itself is still a draft in Play Console.
 - Adds release notes in Catalan, English, and Spanish to every uploaded release draft.
 - Uploads localized store listing metadata, feature graphics, icons, and phone screenshots from `fastlane/metadata/android`.
-- Skips changelogs for now.
+- Uploads localized release notes from `fastlane/metadata/android/*/changelogs`.
 
 ## Automatic Main Releases
 
@@ -24,6 +24,7 @@ For normal merged changes, the workflow:
 - Builds a signed release AAB.
 - Uploads it to the Google Play `alpha` closed testing track.
 - Uploads the current Play Store listing assets and screenshots.
+- Uploads localized release notes for Catalan, English, and Spanish.
 - Uses `draft` release status until Play Console allows non-draft releases for the app.
 - Leaves production untouched.
 
@@ -126,6 +127,28 @@ Upload only the listing, without uploading a build:
 ```bash
 bundle exec ruby tools/upload_play_store_listing.rb
 ```
+
+## Release Notes
+
+Google Play release notes are uploaded with each release from:
+
+- `fastlane/metadata/android/ca/changelogs`
+- `fastlane/metadata/android/en-US/changelogs`
+- `fastlane/metadata/android/es-ES/changelogs`
+
+The upload script looks first for a file matching the uploaded Play version code, for example:
+
+```text
+fastlane/metadata/android/en-US/changelogs/42.txt
+```
+
+If there is no version-specific file, it falls back to:
+
+```text
+fastlane/metadata/android/en-US/changelogs/default.txt
+```
+
+Use `default.txt` for generic closed-testing notes, and add `<versionCode>.txt` files only when a release needs specific wording.
 
 ## GitHub Actions Setup
 
