@@ -1,0 +1,5 @@
+First GroveTimer release for closed testing.
+
+- Timer to automatically stop media playback.
+- Persistent notification while the timer is running.
+- Settings to control timer behavior.
