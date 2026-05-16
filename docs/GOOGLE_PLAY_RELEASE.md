@@ -150,6 +150,25 @@ fastlane/metadata/android/en-US/changelogs/default.txt
 
 Use `default.txt` for generic closed-testing notes, and add `<versionCode>.txt` files only when a release needs specific wording.
 
+Release notes should be prepared during PR review, not after merging to `main`.
+For every PR that changes user-visible app behavior, UI, permissions, Play Store
+metadata, or release behavior, generate or propose short Play Store notes in all
+supported listing languages:
+
+- `ca`
+- `en-US`
+- `es-ES`
+
+The notes should summarize what changed since the previous published version in
+user-facing language. Avoid raw commit logs, implementation details, branch names,
+or internal ticket references. If a PR has no user-visible release note, state
+that explicitly in the PR description.
+
+Automation should eventually generate a draft set of localized notes for each PR
+from the PR title, body, labels, and changed files. Maintainers can then edit the
+draft before merge. The release upload should keep using the committed changelog
+files as the final source of truth.
+
 ## GitHub Actions Setup
 
 The workflow lives at `.github/workflows/google-play.yml`.
