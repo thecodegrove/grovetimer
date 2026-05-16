@@ -22,8 +22,7 @@
     <string name="version_title">Versión</string>
     <string name="developer_title">Desarrollador</string>
     <string name="developer_value">TheCodeGrove</string>
-    <string name="about_github_title">GitHub</string>
-    <string name="about_buymeacoffee_title">Buy Me a Coffee</string>
+    <string name="about_kofi_title">Ko-fi</string>
     
     <!-- Settings Card -->
     <string name="timer_options_title">Opciones de Timer</string>
