@@ -154,7 +154,7 @@ fun SettingsScreen(
                 )
                 
                 LinkRow(
-                    title = stringResource(R.string.about_buymeacoffee_title),
+                    title = stringResource(R.string.about_kofi_title),
                     onClick = {
                         openUrl(context, "https://ko-fi.com/thecodegrove")
                     }
