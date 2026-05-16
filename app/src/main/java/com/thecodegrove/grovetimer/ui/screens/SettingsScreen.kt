@@ -154,16 +154,9 @@ fun SettingsScreen(
                 )
                 
                 LinkRow(
-                    title = stringResource(R.string.about_github_title),
-                    onClick = {
-                        openUrl(context, "https://github.com/thecodegrove/grovetimer")
-                    }
-                )
-                
-                LinkRow(
                     title = stringResource(R.string.about_buymeacoffee_title),
                     onClick = {
-                        openUrl(context, "https://buymeacoffee.com/thecodegrove")
+                        openUrl(context, "https://ko-fi.com/thecodegrove")
                     }
                 )
             }
