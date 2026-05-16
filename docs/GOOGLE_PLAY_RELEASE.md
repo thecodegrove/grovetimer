@@ -11,6 +11,7 @@ The default workflow is conservative:
 - Builds `app/build/outputs/bundle/release/app-release.aab`.
 - Uploads to the `alpha` closed testing track by default.
 - Uses `draft` release status while the app itself is still a draft in Play Console.
+- Adds release notes in Catalan, English, and Spanish to every uploaded release draft.
 - Uploads localized store listing metadata, feature graphics, icons, and phone screenshots from `fastlane/metadata/android`.
 - Skips changelogs for now.
 
@@ -134,6 +135,10 @@ It has two entry points:
 
 - `push` to `main`: automatic closed testing upload with `PLAY_TRACK=alpha` and `PLAY_RELEASE_STATUS=draft` while the app is still a draft.
 - `workflow_dispatch`: manual validation or manual upload to `internal`, `alpha`, `beta`, or `production`.
+
+`main` is protected in GitHub. Changes must be made on a branch and merged through
+a pull request; direct pushes, force pushes, and branch deletion are blocked. The
+protection also applies to administrators.
 
 Add these repository secrets:
 
