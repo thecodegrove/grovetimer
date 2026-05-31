@@ -26,6 +26,9 @@ For normal merged changes, the workflow:
 - Uploads the current Play Store listing assets and screenshots.
 - Uploads localized release notes for Catalan, English, and Spanish.
 - Uses `draft` release status until Play Console allows non-draft releases for the app.
+- Commits Play edits with `changesNotSentForReview=true`, so Play Console keeps
+  changes ready to send for review manually instead of failing automatic review
+  submission.
 - Leaves production untouched.
 
 This means the intended flow is:
@@ -105,6 +108,12 @@ To change track/status:
 ```bash
 PLAY_TRACK=beta PLAY_RELEASE_STATUS=draft bundle exec ruby tools/upload_play_store_release.rb
 ```
+
+By default the upload scripts set `PLAY_CHANGES_NOT_SENT_FOR_REVIEW=true`, which
+maps to the Google Play API `changesNotSentForReview` commit parameter. This is
+needed when Play Console does not allow API uploads to send changes for review
+automatically. After the workflow succeeds, open Play Console and send the
+committed changes for review from the Publishing overview.
 
 ## Play Store Listing Assets
 

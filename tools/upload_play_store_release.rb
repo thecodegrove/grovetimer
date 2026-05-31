@@ -9,22 +9,8 @@ AAB_PATH = ENV.fetch("PLAY_AAB_PATH", "app/build/outputs/bundle/release/app-rele
 TRACK = ENV.fetch("PLAY_TRACK", "alpha")
 RELEASE_STATUS = ENV.fetch("PLAY_RELEASE_STATUS", "draft")
 METADATA_PATH = ENV.fetch("PLAY_METADATA_PATH", "fastlane/metadata/android")
+CHANGES_NOT_SENT_FOR_REVIEW = ENV.fetch("PLAY_CHANGES_NOT_SENT_FOR_REVIEW", "true") == "true"
 SCOPE = "https://www.googleapis.com/auth/androidpublisher"
-
-RELEASE_NOTES = [
-  Google::Apis::AndroidpublisherV3::LocalizedText.new(
-    language: "ca",
-    text: "Primera versio de prova tancada de GroveTimer amb temporitzador de reproduccio, notificacio persistent i configuracio de fade-out progressiu."
-  ),
-  Google::Apis::AndroidpublisherV3::LocalizedText.new(
-    language: "en-US",
-    text: "First closed testing version of GroveTimer with playback timer, persistent notification, and progressive fade-out settings."
-  ),
-  Google::Apis::AndroidpublisherV3::LocalizedText.new(
-    language: "es-ES",
-    text: "Primera version de prueba cerrada de GroveTimer con temporizador de reproduccion, notificacion persistente y configuracion de fade-out progresivo."
-  )
-].freeze
 
 unless File.exist?(AAB_PATH)
   raise "AAB not found at #{AAB_PATH}"
@@ -70,7 +56,6 @@ begin
 
   release = Google::Apis::AndroidpublisherV3::TrackRelease.new(
     name: "GroveTimer #{ENV.fetch("GROVETIMER_VERSION_CODE", version_code)}",
-    release_notes: RELEASE_NOTES,
     status: RELEASE_STATUS,
     version_codes: [version_code],
     release_notes: localized_release_notes(version_code)
@@ -87,7 +72,11 @@ begin
     service.validate_edit(PACKAGE_NAME, edit_id)
     puts "Validated Google Play release edit #{edit_id}"
   else
-    service.commit_edit(PACKAGE_NAME, edit_id)
+    service.commit_edit(
+      PACKAGE_NAME,
+      edit_id,
+      changes_not_sent_for_review: CHANGES_NOT_SENT_FOR_REVIEW
+    )
     puts "Committed Google Play release edit #{edit_id}"
   end
 rescue StandardError
