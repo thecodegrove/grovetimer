@@ -15,7 +15,7 @@ import com.thecodegrove.grovetimer.R
 
 /**
  * Servicio dedicado para manejar notificaciones del temporizador.
- * Se ejecuta como servicio en primer plano y proporciona controles interactivos.
+ * Proporciona controles interactivos para la notificación del temporizador.
  */
 class TimerNotificationService : Service() {
 
@@ -250,7 +250,7 @@ class TimerNotificationService : Service() {
                 action = ACTION_START_NOTIFICATION
                 putExtra(EXTRA_REMAINING_TIME, initialTime)
             }
-            context.startForegroundService(intent)
+            context.startService(intent)
         }
         
         /**
