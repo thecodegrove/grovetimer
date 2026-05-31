@@ -251,7 +251,7 @@ class TimerViewModel(
                         putExtra(SleepTimerService.KEY_FADEOUT_ENABLED, currentSettings.fadeoutEnabled)
                         putExtra(SleepTimerService.KEY_VIBRATE_ON_FINISH, currentSettings.vibrateOnFinish)
                     }
-                    ContextCompat.startForegroundService(ctx, intent)
+                    ctx.startService(intent)
                     logd("Started SleepTimerService with ${timeMillis}ms, fadeout=${currentSettings.fadeoutEnabled}, vibrate=${currentSettings.vibrateOnFinish}")
                 } catch (e: Exception) {
                     Log.e(TAG, "Error starting SleepTimerService", e)

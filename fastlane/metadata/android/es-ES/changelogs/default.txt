@@ -1,5 +1,5 @@
-Primera version de GroveTimer para pruebas cerradas.
+Actualizacion de GroveTimer.
 
-- Temporizador para detener la reproduccion multimedia automaticamente.
-- Notificacion persistente mientras el temporizador esta activo.
-- Ajustes para controlar el comportamiento del temporizador.
+- Mejora de fiabilidad cuando finaliza el temporizador.
+- Eliminado un permiso de servicio en primer plano que ya no era necesario.
+- La notificacion del temporizador sigue mostrando controles rapidos.

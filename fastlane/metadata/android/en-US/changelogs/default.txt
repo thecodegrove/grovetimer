@@ -1,5 +1,5 @@
-First GroveTimer release for closed testing.
+GroveTimer update.
 
-- Timer to automatically stop media playback.
-- Persistent notification while the timer is running.
-- Settings to control timer behavior.
+- Improved reliability when the timer finishes.
+- Removed a foreground service permission that is no longer needed.
+- The timer notification still shows quick controls.

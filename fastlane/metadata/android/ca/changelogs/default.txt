@@ -1,5 +1,5 @@
-Primera versio de GroveTimer per a proves tancades.
+Actualitzacio de GroveTimer.
 
-- Temporitzador per aturar la reproduccio multimedia automaticament.
-- Notificacio persistent mentre el temporitzador esta actiu.
-- Ajustos per controlar el comportament del temporitzador.
+- Millora de fiabilitat quan finalitza el temporitzador.
+- Eliminat un permis de servei en primer pla que ja no era necessari.
+- La notificacio del temporitzador continua mostrant controls rapids.

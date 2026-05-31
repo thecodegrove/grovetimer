@@ -1,6 +1,7 @@
 package com.thecodegrove.grovetimer.services
 
 import android.app.ActivityManager
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -67,6 +68,8 @@ class SleepTimerService : Service() {
     private var isFadeOutStarted: Boolean = false  // Control para evitar múltiples fade-outs
     private var fadeOutJob: Job? = null  // Job del fade-out para poder cancelarlo
     private var lastSettingsReloadTime: Long = 0L  // Timestamp de última recarga de configuración
+    private var timerIsActive: Boolean = false
+    private var timerExpiryHandled: Boolean = false
     
     // SharedPreferences para persistir el estado del temporizador
     private val prefs by lazy {
@@ -172,6 +175,11 @@ class SleepTimerService : Service() {
                 reloadSettingsFromPreferences()
                 return START_STICKY
             }
+            ACTION_TIMER_EXPIRED -> {
+                logd("🎯 Timer expiry alarm received")
+                handleTimerExpired()
+                return START_NOT_STICKY
+            }
             else -> {
                 // Inicio normal del temporizador
                 countdownTime = intent?.getLongExtra(KEY_DURATION_MILLIS, 0L) ?: 0L
@@ -185,9 +193,9 @@ class SleepTimerService : Service() {
                 
                 logd("🎯 SleepTimerService onStartCommand - duration: $countdownTime ms, fadeout: $fadeoutEnabled, vibrate: $vibrateOnFinish, sound: $soundEnabled, fadeOutDuration: $fadeOutDuration")
 
-                // Iniciar como foreground service con notificación completa
-                logd("🎯 Starting as foreground service with timer notification")
-                startForeground(NOTIF_ID, buildTimerNotification(currentRemainingTime, isPaused))
+                // Mostrar notificación normal. No usamos foreground service para cumplir Play policy.
+                logd("🎯 Showing timer notification without foreground service")
+                updateTimerNotification(currentRemainingTime, isPaused)
                 
                 startTimer()
                 return START_STICKY
@@ -202,6 +210,9 @@ class SleepTimerService : Service() {
         timerJob?.cancel()  // Cancelar cualquier temporizador previo
         currentRemainingTime = countdownTime
         isPaused = false
+        timerIsActive = true
+        timerExpiryHandled = false
+        scheduleTimerAlarm(currentRemainingTime)
         
         // Guardar estado inicial
         saveTimerState()
@@ -242,16 +253,7 @@ class SleepTimerService : Service() {
             }
             
             if (currentRemainingTime <= 0) {
-                logd("Countdown finished, sending finished broadcast")
-                // Enviar broadcast de finalización del temporizador
-                sendTimerFinishedBroadcast()
-                
-                // Limpiar estado guardado
-                clearTimerState()
-                
-                performFadeOutAndPause()
-                performVibration()
-                stopTimer()
+                handleTimerExpired()
             }
         }
     }
@@ -289,6 +291,7 @@ class SleepTimerService : Service() {
             // Actualizar notificación INMEDIATAMENTE con estado pausado
             logd("🎯 Updating notification for pause - time: $currentRemainingTime ms, paused: $isPaused")
             updateTimerNotification(currentRemainingTime, isPaused)
+            cancelTimerAlarm()
             
             // Enviar broadcast de pausa
             sendTimerPausedBroadcast()
@@ -308,6 +311,7 @@ class SleepTimerService : Service() {
         if (isPaused && currentRemainingTime > 0) {
             isPaused = false
             logd("🎯 Timer resumed with $currentRemainingTime ms remaining")
+            scheduleTimerAlarm(currentRemainingTime)
             
             // Reanudar countdown
             timerJob = CoroutineScope(Dispatchers.Main).launch {
@@ -340,11 +344,7 @@ class SleepTimerService : Service() {
                 }
                 
                 if (currentRemainingTime <= 0) {
-                    logd("Countdown finished after resume, sending finished broadcast")
-                    sendTimerFinishedBroadcast()
-                    performFadeOutAndPause()
-                    performVibration()
-                    stopTimer()
+                    handleTimerExpired()
                 }
             }
             
@@ -365,8 +365,15 @@ class SleepTimerService : Service() {
     private fun stopTimer() {
                 logd( "🎯 stopTimer() called")
         timerJob?.cancel()
+        fadeOutJob?.cancel()
+        cancelTimerAlarm()
         currentRemainingTime = 0L
         isPaused = false
+        isFadeOutStarted = false
+        timerIsActive = false
+        timerExpiryHandled = false
+        clearTimerState()
+        getSystemService(NotificationManager::class.java).cancel(NOTIF_ID)
         
         // Enviar broadcast de detención
         sendTimerStoppedBroadcast()
@@ -434,6 +441,33 @@ class SleepTimerService : Service() {
         }
         sendBroadcast(intent)
                 logd( "Timer resumed broadcast sent")
+    }
+
+    private fun handleTimerExpired() {
+        if (timerExpiryHandled) {
+            logd("🎯 Timer expiry ignored because it was already handled")
+            return
+        }
+
+        if (!timerIsActive && !prefs.getBoolean("is_active", false)) {
+            logd("🎯 Timer expiry ignored because no active timer exists")
+            return
+        }
+
+        logd("🎯 Handling timer expiry")
+        timerExpiryHandled = true
+        timerJob?.cancel()
+        currentRemainingTime = 0L
+        isPaused = false
+        timerIsActive = false
+        sendTimerFinishedBroadcast()
+        clearTimerState()
+        cancelTimerAlarm()
+        CoroutineScope(Dispatchers.Main).launch {
+            performFadeOutAndPause()
+            performVibration()
+            stopTimer()
+        }
     }
 
     /**
@@ -1292,6 +1326,38 @@ class SleepTimerService : Service() {
         notificationManager.notify(NOTIF_ID, notification)
                 logd( "🎯 Timer notification updated successfully - ID: $NOTIF_ID")
     }
+
+    private fun scheduleTimerAlarm(delayMillis: Long) {
+        if (delayMillis <= 0L) return
+
+        val alarmManager = getSystemService(AlarmManager::class.java)
+        val triggerAtMillis = System.currentTimeMillis() + delayMillis
+        val pendingIntent = createTimerExpiredPendingIntent()
+
+        alarmManager.setAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            triggerAtMillis,
+            pendingIntent
+        )
+        logd("🎯 Timer alarm scheduled in $delayMillis ms")
+    }
+
+    private fun cancelTimerAlarm() {
+        getSystemService(AlarmManager::class.java).cancel(createTimerExpiredPendingIntent())
+        logd("🎯 Timer alarm cancelled")
+    }
+
+    private fun createTimerExpiredPendingIntent(): PendingIntent {
+        val intent = Intent(this, TimerAlarmReceiver::class.java).apply {
+            action = ACTION_TIMER_EXPIRED
+        }
+        return PendingIntent.getBroadcast(
+            this,
+            REQUEST_CODE_TIMER_EXPIRED,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
     
     /**
      * Crea PendingIntent para acciones de control
@@ -1391,6 +1457,8 @@ class SleepTimerService : Service() {
                 countdownTime = savedCountdownTime
                 currentRemainingTime = savedRemainingTime
                 isPaused = savedIsPaused
+                timerIsActive = true
+                timerExpiryHandled = false
                 
                 logd("🎯 Timer state loaded: remaining=$currentRemainingTime, paused=$isPaused, countdown=$countdownTime")
                 
@@ -1417,8 +1485,10 @@ class SleepTimerService : Service() {
             // Cargar configuración actualizada antes de iniciar
             reloadSettingsFromPreferences()
             
-            // Iniciar como foreground service
-            startForeground(NOTIF_ID, buildTimerNotification(currentRemainingTime, isPaused))
+            updateTimerNotification(currentRemainingTime, isPaused)
+            if (!isPaused) {
+                scheduleTimerAlarm(currentRemainingTime)
+            }
             
             // Iniciar el countdown
             startTimer()
@@ -1449,6 +1519,7 @@ class SleepTimerService : Service() {
         private const val REQUEST_CODE_PAUSE = 100
         private const val REQUEST_CODE_RESUME = 101
         private const val REQUEST_CODE_STOP = 102
+        private const val REQUEST_CODE_TIMER_EXPIRED = 103
         
         // Broadcast actions para comunicación con la UI
         const val ACTION_TIMER_UPDATE = "com.thecodegrove.grovetimer.TIMER_UPDATE"
@@ -1459,6 +1530,7 @@ class SleepTimerService : Service() {
         const val ACTION_REQUEST_STATE = "com.thecodegrove.grovetimer.REQUEST_TIMER_STATE"
         const val ACTION_STATE_RESPONSE = "com.thecodegrove.grovetimer.TIMER_STATE_RESPONSE"
         const val ACTION_UPDATE_SETTINGS = "com.thecodegrove.grovetimer.UPDATE_SETTINGS"
+        const val ACTION_TIMER_EXPIRED = "com.thecodegrove.grovetimer.TIMER_EXPIRED"
         const val EXTRA_REMAINING_TIME = "extra_remaining_time"
         const val EXTRA_IS_PAUSED = "extra_is_paused"
         const val EXTRA_IS_ACTIVE = "extra_is_active"
@@ -1468,7 +1540,7 @@ class SleepTimerService : Service() {
             val intent = Intent(context, SleepTimerService::class.java).apply {
                 putExtra(KEY_DURATION_MILLIS, durationMillis)
             }
-            context.startForegroundService(intent)
+            context.startService(intent)
         }
     }
 }
