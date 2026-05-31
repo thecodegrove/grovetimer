@@ -6,6 +6,7 @@ require "googleauth"
 
 PACKAGE_NAME = "com.thecodegrove.grovetimer"
 METADATA_PATH = File.expand_path("../fastlane/metadata/android", __dir__)
+CHANGES_NOT_SENT_FOR_REVIEW = ENV.fetch("PLAY_CHANGES_NOT_SENT_FOR_REVIEW", "true") == "true"
 SCOPE = "https://www.googleapis.com/auth/androidpublisher"
 
 IMAGE_TYPES = {
@@ -65,7 +66,11 @@ begin
     service.validate_edit(PACKAGE_NAME, edit_id)
     puts "Validated Google Play edit #{edit_id}"
   else
-    service.commit_edit(PACKAGE_NAME, edit_id)
+    service.commit_edit(
+      PACKAGE_NAME,
+      edit_id,
+      changes_not_sent_for_review: CHANGES_NOT_SENT_FOR_REVIEW
+    )
     puts "Committed Google Play edit #{edit_id}"
   end
 rescue StandardError
